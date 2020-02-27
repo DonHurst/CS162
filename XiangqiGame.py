@@ -13,9 +13,6 @@ class Board:
         self.__rows = 10
         self.__columns = 9
 
-        # Create empty game board
-        #self.__gameBoard = [[0] * self.__columns] * self.__rows
-
         self.__gameBoard = []
 
         for x in range(self.__rows):
@@ -70,7 +67,6 @@ class Board:
         self.__gameBoard[0][4] = General(0, 4, 'black')
         self.__gameBoard[9][4] = General(0, 9, 'red')
 
-
     def print_board(self):
         """The print board function"""
 
@@ -85,7 +81,6 @@ class XiangqiGame:
 
     def __init__(self):
         self.__gameBoard = Board()
-
 
     def get_game_state(self):
         pass
@@ -106,12 +101,20 @@ class Piece:
         self.__color = color
 
 
+
+
 class General(Piece):
     """"""
 
     def __init__(self, x, y, color):
-        super().__init__(x, y, color)
+        super(General, self).__init__(x, y, color)
         self.__symbol = 'G'
+
+    def move(self, x_pos, y_pos):
+
+        
+
+
 
 
 class Advisor(Piece):
@@ -121,6 +124,13 @@ class Advisor(Piece):
         super().__init__(x, y, color)
         self.__symbol = 'A'
 
+    def move(self, x_pos, y_pos):
+        current_x = self.__x_position
+        current_y = self.__y_position
+
+        if self.__color == 'red':
+
+        else:
 
 class Elephant(Piece):
     """"""
