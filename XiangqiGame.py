@@ -106,7 +106,7 @@ class XiangqiGame:
         else:
             row_pos = pos_from[1]
             col_pos = self.__letters[pos_from[0]]
-            #self.__gameboard[row_pos][col_pos]
+            self.__gameboard[row_pos][col_pos].move()
 
 class Piece:
     """"""
@@ -141,13 +141,25 @@ class Advisor(Piece):
         super().__init__(x, y, color)
         self.__symbol = 'A'
 
-    #def move(self, x_pos, y_pos):
-        #current_x = self.__x_position
-        #current_y = self.__y_position
+    def move(self, x_pos, y_pos):
 
-        #if self.__color == 'red':
+        current_x = self.__x_position
+        current_y = self.__y_position
+        valid_move = False
 
-        #else
+
+        if self.__color == 'red':
+
+
+        elif self.__color == 'black':
+
+        if current_x
+
+        if valid_move is True:
+
+
+        else:
+            return
 
 class Elephant(Piece):
     """"""
