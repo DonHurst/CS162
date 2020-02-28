@@ -81,6 +81,7 @@ class XiangqiGame:
 
     def __init__(self):
         self.__gameBoard = Board()
+        self.__letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 
     def get_game_state(self):
         pass
@@ -89,8 +90,23 @@ class XiangqiGame:
         pass
 
     def make_move(self, pos_from, pos_to):
-        pass
 
+        # If entered move isn't valid
+        if len(pos_from) != 2:
+            return False
+
+        # If entered move isn't valid
+        if len(pos_to) != 2:
+            return False
+
+        # If from position move isn't valid digits
+        if pos_from[0] not in self.__letters or pos_from[1] > 9:
+            return False
+
+        else:
+            row_pos = pos_from[1]
+            col_pos = self.__letters[pos_from[0]]
+            #self.__gameboard[row_pos][col_pos]
 
 class Piece:
     """"""
@@ -103,6 +119,7 @@ class Piece:
 
 
 
+
 class General(Piece):
     """"""
 
@@ -110,7 +127,7 @@ class General(Piece):
         super(General, self).__init__(x, y, color)
         self.__symbol = 'G'
 
-    def move(self, x_pos, y_pos):
+    #def move(self, x_pos, y_pos):
 
         
 
@@ -124,13 +141,13 @@ class Advisor(Piece):
         super().__init__(x, y, color)
         self.__symbol = 'A'
 
-    def move(self, x_pos, y_pos):
-        current_x = self.__x_position
-        current_y = self.__y_position
+    #def move(self, x_pos, y_pos):
+        #current_x = self.__x_position
+        #current_y = self.__y_position
 
-        if self.__color == 'red':
+        #if self.__color == 'red':
 
-        else:
+        #else
 
 class Elephant(Piece):
     """"""
@@ -176,3 +193,10 @@ if __name__ == '__main__':
 
     board = Board()
     board.print_board()
+    """
+    game = XiangqiGame()
+    move_result = game.make_move('c1', 'e3')
+    black_in_check = game.is_in_check('black')
+    game.make_move('e7', 'e6')
+    state = game.get_game_state()
+    """
