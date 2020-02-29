@@ -80,8 +80,14 @@ class Board:
 class XiangqiGame:
 
     def __init__(self):
+        """Init function for the game initializes the game board and a list to hold the corresponding letter values
+        the user may enter to make a move. Initializes the current turn to red"""
         self.__gameBoard = Board()
         self.__letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+        self.__current_turn = 'red'
+
+    def get_turn(self):
+        return self.__current_turn
 
     def get_game_state(self):
         pass
@@ -90,7 +96,7 @@ class XiangqiGame:
         pass
 
     def make_move(self, pos_from, pos_to):
-
+        """
         # If entered move isn't valid
         if len(pos_from) != 2:
             return False
@@ -100,13 +106,29 @@ class XiangqiGame:
             return False
 
         # If from position move isn't valid digits
-        if pos_from[0] not in self.__letters or pos_from[1] > 9:
+        if pos_from[0] not in self.__letters or pos_from[1] < 0 or pos_from[1] > 9:
+            return False
+        """
+
+        # set the from position to the row value indicated and the index value for column
+        from_row_pos = pos_from[1]
+        from_col_pos = self.__letters.index(pos_from[0])
+
+        # create variable for the piece to be moved
+        moving_piece = self.__gameboard[from_row_pos][from_col_pos]
+
+        # if the piece to be moved is not the current turn's color, return false
+        if moving_piece.__color != self.__current_turn:
             return False
 
-        else:
-            row_pos = pos_from[1]
-            col_pos = self.__letters[pos_from[0]]
-            self.__gameboard[row_pos][col_pos].move()
+        # set the end location to the row value indicated and the index value for column
+        to_row_pos = pos_to[1]
+        to_col_pos = self.__letters.index(pos_to[0])
+        moved_to_space = self.__gameBoard[to_row_pos][to_col_pos]
+
+        # call function to move the piece passing in the moved-to location
+        moving_piece.move(to_row_pos, to_col_pos, moved_to_space)
+
 
 class Piece:
     """"""
@@ -116,8 +138,8 @@ class Piece:
         self.__y_position = y
         self.__color = color
 
-
-
+    def move(self, x_pos, y_pos, target_space):
+        pass
 
 
 class General(Piece):
@@ -125,12 +147,21 @@ class General(Piece):
 
     def __init__(self, x, y, color):
         super(General, self).__init__(x, y, color)
-        self.__symbol = 'G'
 
-    #def move(self, x_pos, y_pos):
+    def move(self, x_pos, y_pos, target_space):
 
-        
+        valid_move = False
 
+        if x_pos == self.x and (y_pos == self.y - 1 or y_pos == self.y + 1):
+            if target_space == '0':
+                valid_move == True
+
+        elif
+
+
+
+        if valid_move is False:
+            return False
 
 
 
@@ -139,34 +170,19 @@ class Advisor(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
-        self.__symbol = 'A'
 
     def move(self, x_pos, y_pos):
+        pass
 
-        current_x = self.__x_position
-        current_y = self.__y_position
-        valid_move = False
-
-
-        if self.__color == 'red':
-
-
-        elif self.__color == 'black':
-
-        if current_x
-
-        if valid_move is True:
-
-
-        else:
-            return
 
 class Elephant(Piece):
     """"""
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
-        self.__symbol = 'E'
+
+    def move(self, x_pos, y_pos):
+        pass
 
 
 class Horse(Piece):
@@ -174,7 +190,9 @@ class Horse(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
-        self.__symbol = 'H'
+
+    def move(self, x_pos, y_pos):
+        pass
 
 
 class Chariot(Piece):
@@ -182,7 +200,9 @@ class Chariot(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
-        self.__symbol = 'CH'
+
+    def move(self, x_pos, y_pos):
+        pass
 
 
 class Cannon(Piece):
@@ -190,7 +210,9 @@ class Cannon(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
-        self.__symbol = 'CA'
+
+    def move(self, x_pos, y_pos):
+        pass
 
 
 class Soldier(Piece):
@@ -198,7 +220,9 @@ class Soldier(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
-        self.__symbol = 'S'
+
+    def move(self, x_pos, y_pos):
+        pass
 
 
 if __name__ == '__main__':
