@@ -2,6 +2,8 @@
 # Date: 02/22/2020
 # Description:
 
+from typing import List
+
 
 class Board:
     """The Board class """
@@ -67,6 +69,9 @@ class Board:
         self.__gameBoard[0][4] = General(0, 4, 'black')
         self.__gameBoard[9][4] = General(0, 9, 'red')
 
+    def get_piece(self, x, y):
+        return self.__gameBoard[x][y]
+
     def print_board(self):
         """The print board function"""
 
@@ -78,6 +83,7 @@ class Board:
 
 
 class XiangqiGame:
+
 
     def __init__(self):
         """Init function for the game initializes the game board and a list to hold the corresponding letter values
@@ -111,20 +117,23 @@ class XiangqiGame:
         """
 
         # set the from position to the row value indicated and the index value for column
-        from_row_pos = pos_from[1]
-        from_col_pos = self.__letters.index(pos_from[0])
+        from_row_pos = int(pos_from[1]) - 1
+        from_col_pos = int(self.__letters.index(pos_from[0]))
 
         # create variable for the piece to be moved
-        moving_piece = self.__gameboard[from_row_pos][from_col_pos]
-
-        # if the piece to be moved is not the current turn's color, return false
-        if moving_piece.__color != self.__current_turn:
+        moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
+        print(moving_piece)
+        if moving_piece == '0':
             return False
 
+        # if the piece to be moved is not the current turn's color, return false
+        if moving_piece.get_color() != self.__current_turn:
+            print("hello")
+
         # set the end location to the row value indicated and the index value for column
-        to_row_pos = pos_to[1]
-        to_col_pos = self.__letters.index(pos_to[0])
-        moved_to_space = self.__gameBoard[to_row_pos][to_col_pos]
+        to_row_pos = int(pos_to[1]) - 1
+        to_col_pos = int(self.__letters.index(pos_to[0]))
+        moved_to_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
 
         # call function to move the piece passing in the moved-to location
         moving_piece.move(to_row_pos, to_col_pos, moved_to_space)
@@ -138,8 +147,14 @@ class Piece:
         self.__y_position = y
         self.__color = color
 
-    def move(self, x_pos, y_pos, target_space):
+    def move(self, x_pos, y_pos, target_position):
         pass
+
+    def check_move(self, x_pos, y_pos, target_position):
+        pass
+
+    def get_color(self):
+        return self.__color
 
 
 class General(Piece):
@@ -148,22 +163,47 @@ class General(Piece):
     def __init__(self, x, y, color):
         super(General, self).__init__(x, y, color)
 
-    def move(self, x_pos, y_pos, target_space):
+    def move(self, x_pos, y_pos, target_position):
 
-        valid_move = False
+        valid_move = self.check_move(x_pos, y_pos, target_position)
 
+        if valid_move is True:
+            pass
+        else:
+            return False
+        """
         if x_pos == self.x and (y_pos == self.y - 1 or y_pos == self.y + 1):
             if target_space == '0':
                 valid_move == True
-
-        elif
+        """
 
 
 
         if valid_move is False:
             return False
 
+    def check_move(self, x_pos, y_pos, target_position):
 
+        # if targeted position is empty
+        if target_position == '0':
+
+            # If the x position is + or - 1 and the y position is constant
+            if (self.__x_position + 1 == x_pos or self.__x_position - 1 == x_pos) and self.__y_position == y_pos:
+                return True
+
+            # If the y position is + or - 1 and the x position is consistent
+            elif (self.__y_position - 1 == y_pos or self.__y_position + 1 == y_pos) and self.__x_position == x_pos:
+                return True
+
+            # If neither of the above are true, return false
+            else:
+                return False
+
+        else:
+            return False
+
+    def get_color(self):
+        return self.__color
 
 class Advisor(Piece):
     """"""
@@ -171,8 +211,9 @@ class Advisor(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos):
+    def move(self, x_pos, y_pos, target_position):
         pass
+
 
 
 class Elephant(Piece):
@@ -181,8 +222,9 @@ class Elephant(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos):
+    def move(self, x_pos, y_pos, target_position):
         pass
+
 
 
 class Horse(Piece):
@@ -191,8 +233,9 @@ class Horse(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos):
+    def move(self, x_pos, y_pos, target_position):
         pass
+
 
 
 class Chariot(Piece):
@@ -201,8 +244,9 @@ class Chariot(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos):
+    def move(self, x_pos, y_pos, target_position):
         pass
+
 
 
 class Cannon(Piece):
@@ -211,8 +255,9 @@ class Cannon(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos):
+    def move(self, x_pos, y_pos, target_position):
         pass
+
 
 
 class Soldier(Piece):
@@ -221,7 +266,7 @@ class Soldier(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos):
+    def move(self, x_pos, y_pos, target_position):
         pass
 
 
@@ -229,9 +274,9 @@ if __name__ == '__main__':
 
     board = Board()
     board.print_board()
-    """
     game = XiangqiGame()
-    move_result = game.make_move('c1', 'e3')
+    move_result = game.make_move('a1', 'e3')
+    """
     black_in_check = game.is_in_check('black')
     game.make_move('e7', 'e6')
     state = game.get_game_state()
