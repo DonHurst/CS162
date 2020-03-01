@@ -122,13 +122,14 @@ class XiangqiGame:
 
         # create variable for the piece to be moved
         moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
-        print(moving_piece)
+        print(moving_piece.get_color())
         if moving_piece == '0':
             return False
 
         # if the piece to be moved is not the current turn's color, return false
         if moving_piece.get_color() != self.__current_turn:
-            print("hello")
+            print('wrong color')
+            return False
 
         # set the end location to the row value indicated and the index value for column
         to_row_pos = int(pos_to[1]) - 1
@@ -176,8 +177,6 @@ class General(Piece):
             if target_space == '0':
                 valid_move == True
         """
-
-
 
         if valid_move is False:
             return False
@@ -234,7 +233,7 @@ class Horse(Piece):
         super().__init__(x, y, color)
 
     def move(self, x_pos, y_pos, target_position):
-        pass
+        print("LOL")
 
 
 
@@ -245,7 +244,10 @@ class Chariot(Piece):
         super().__init__(x, y, color)
 
     def move(self, x_pos, y_pos, target_position):
-        pass
+        print("LOL")
+
+    def get_color(self):
+        return self.__color
 
 
 
