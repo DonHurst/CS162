@@ -36,8 +36,8 @@ class Board:
         self.__gameBoard[6][8] = Soldier(6, 8, 'red')
 
         # initialize Cannon Piece Placement
-        self.__gameBoard[2][1] = Cannon(2, 1,'black')
-        self.__gameBoard[2][7] = Cannon(2, 7,'black')
+        self.__gameBoard[2][1] = Cannon(2, 1, 'black')
+        self.__gameBoard[2][7] = Cannon(2, 7, 'black')
         self.__gameBoard[7][1] = Cannon(7, 1, 'red')
         self.__gameBoard[7][7] = Cannon(7, 7, 'red')
 
@@ -117,14 +117,22 @@ class XiangqiGame:
         """
 
         # set the from position to the row value indicated and the index value for column
-        from_row_pos = int(pos_from[1]) - 1
+        if len(pos_from) > 2:
+            from_row_pos = int(pos_from[1] + pos_from[2]) - 1
+            print(from_row_pos)
+        else:
+            from_row_pos = int(pos_from[1]) - 1
+
         from_col_pos = int(self.__letters.index(pos_from[0]))
 
         # create variable for the piece to be moved
         moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
-        print(moving_piece.get_color())
         if moving_piece == '0':
-            return False
+            print('space empty')
+            return
+
+        print(moving_piece)
+        print(moving_piece.get_color())
 
         # if the piece to be moved is not the current turn's color, return false
         if moving_piece.get_color() != self.__current_turn:
@@ -246,9 +254,6 @@ class Chariot(Piece):
     def move(self, x_pos, y_pos, target_position):
         print("LOL")
 
-    def get_color(self):
-        return self.__color
-
 
 
 class Cannon(Piece):
@@ -277,7 +282,7 @@ if __name__ == '__main__':
     board = Board()
     board.print_board()
     game = XiangqiGame()
-    move_result = game.make_move('a1', 'e3')
+    move_result = game.make_move('a10', 'e3')
     """
     black_in_check = game.is_in_check('black')
     game.make_move('e7', 'e6')
