@@ -83,7 +83,9 @@ class Board:
 
 
 class XiangqiGame:
+    """
 
+    """
 
     def __init__(self):
         """Init function for the game initializes the game board and a list to hold the corresponding letter values
@@ -91,9 +93,6 @@ class XiangqiGame:
         self.__gameBoard = Board()
         self.__letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
         self.__current_turn = 'red'
-
-    def get_turn(self):
-        return self.__current_turn
 
     def get_game_state(self):
         pass
@@ -103,45 +102,55 @@ class XiangqiGame:
 
     def make_move(self, pos_from, pos_to):
         """
-        # If entered move isn't valid
-        if len(pos_from) != 2:
-            return False
-
-        # If entered move isn't valid
-        if len(pos_to) != 2:
-            return False
-
-        # If from position move isn't valid digits
-        if pos_from[0] not in self.__letters or pos_from[1] < 0 or pos_from[1] > 9:
-            return False
         """
 
-        # set the from position to the row value indicated and the index value for column
+        # if the length of the from value is greater than 2 (aka if 10 is entered)
         if len(pos_from) > 2:
+
+            # set from row position to the concatenated 1 & 2 positions (10) and subtracting one so it's the 9 index
             from_row_pos = int(pos_from[1] + pos_from[2]) - 1
-            print(from_row_pos)
+
         else:
+
+            # from row position set to the int in the second part of the string
             from_row_pos = int(pos_from[1]) - 1
 
+        # instantiate a variable to hold the integer that corresponds with the letter
         from_col_pos = int(self.__letters.index(pos_from[0]))
 
         # create variable for the piece to be moved
         moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
+
+        # if the piece to be moved is just an empty space
         if moving_piece == '0':
-            print('space empty')
-            return
+
+            print('space empty, returning now')
+            # return false since no piece is on indicated space
+            return False
 
         print(moving_piece)
-        print(moving_piece.get_color())
+        # print(moving_piece.get_color())
 
         # if the piece to be moved is not the current turn's color, return false
         if moving_piece.get_color() != self.__current_turn:
             print('wrong color')
             return False
 
-        # set the end location to the row value indicated and the index value for column
-        to_row_pos = int(pos_to[1]) - 1
+        # if the length of the 2 value is greater than 2 (aka if 10 is entered)
+        if len(pos_to) > 2:
+
+            # set to row position to the concatenated 1 & 2 positions (10) and subtracting one so it's the 9 index
+            to_row_pos = int(pos_to[1] + pos_to[2]) - 1
+
+        else:
+
+            # to row position set to the int in the second part of the string
+            to_row_pos = int(pos_to[1])
+
+        # instantiate a variable to hold the integer that corresponds with the letter
         to_col_pos = int(self.__letters.index(pos_to[0]))
+
+        # instantiate a variable to hold the space being moved to on the game board
         moved_to_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
 
         # call function to move the piece passing in the moved-to location
@@ -175,6 +184,7 @@ class General(Piece):
     def move(self, x_pos, y_pos, target_position):
 
         valid_move = self.check_move(x_pos, y_pos, target_position)
+
 
         if valid_move is True:
             pass
@@ -252,9 +262,18 @@ class Chariot(Piece):
         super().__init__(x, y, color)
 
     def move(self, x_pos, y_pos, target_position):
-        print("LOL")
 
+        if self.x == x_pos:
 
+        if self.y == y_pos:
+
+        print("MOVIN")
+
+    def check_move(self, x_pos, y_pos, target_position):
+
+        if self.x == x_pos:
+
+        if self.y == y_pos:
 
 class Cannon(Piece):
     """"""
