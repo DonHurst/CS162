@@ -67,7 +67,7 @@ class Board:
 
         # Initialize General Piece Placement
         self.__gameBoard[0][4] = General(0, 4, 'black')
-        self.__gameBoard[9][4] = General(0, 9, 'red')
+        self.__gameBoard[9][4] = General(9, 4, 'red')
 
     def get_piece(self, x, y):
         return self.__gameBoard[x][y]
@@ -144,23 +144,23 @@ class XiangqiGame:
 
             # set to row position to the concatenated 1 & 2 positions (10) and subtracting one so it's the 9 index
             to_row_pos = int(pos_to[1] + pos_to[2]) - 1
+            print("too long")
 
         else:
 
             # to row position set to the int in the second part of the string
-            to_row_pos = int(pos_to[1])
+            to_row_pos = int(pos_to[1]) - 1
 
         # instantiate a variable to hold the integer that corresponds with the letter
         to_col_pos = int(self.__letters.index(pos_to[0]))
-
-        # instantiate a variable to hold the space being moved to on the game board
-        moved_to_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
 
         # instantiate a variable to hold the game board
         board = self.__gameBoard.get_board()
 
         # call function to move the piece passing in the moved-to location
-        moving_piece.check_move(to_row_pos, to_col_pos, board)
+        moving_piece.move(to_row_pos, to_col_pos, board)
+
+        self.__gameBoard.print_board()
 
 
 
@@ -174,6 +174,9 @@ class Piece:
         self.__y_position = y
         self.__color = color
 
+    def move(self, x_pos, y_pos, gameboard):
+        pass
+
     def check_move(self, x_pos, y_pos, gameboard):
         pass
 
@@ -186,6 +189,12 @@ class Piece:
     def get_color(self):
         return self.__color
 
+    def set_x_position(self, position):
+        self.__x_position = position
+
+    def set_y_position(self, position):
+        self.__y_position = position
+
 
 class General(Piece):
     """"""
@@ -193,45 +202,155 @@ class General(Piece):
     def __init__(self, x, y, color):
         super(General, self).__init__(x, y, color)
 
-    """
-    def move(self, x_pos, y_pos, target_position):
+    def move(self, x_pos, y_pos, gameboard):
+        """"""
 
-        valid_move = self.check_move(x_pos, y_pos, target_position)
+        # set move checker equal to the result of the check move function
+        move_checker = self.check_move(x_pos, y_pos, gameboard)
 
+        # if the move checker is True
+        if move_checker is True:
 
-        if valid_move is True:
-            pass
+            # set variables for the current x and y values
+            current_x = self.get_x_position()
+            current_y = self.get_y_position()
+            print(current_x)
+            print(current_y)
+
+            # set the x and y positions for the piece
+            self.set_x_position(x_pos)
+            self.set_y_position(y_pos)
+
+            # change the moved from space to empty and set the new space equal to the piece
+            gameboard[x_pos][y_pos] = self
+            gameboard[current_x][current_y] = '0'
+
         else:
             return False
-        
-        if x_pos == self.x and (y_pos == self.y - 1 or y_pos == self.y + 1):
-            if target_space == '0':
-                valid_move == True
-        
-
-        if valid_move is False:
-            return False
-    """
 
     def check_move(self, x_pos, y_pos, gameboard):
 
-        # if targeted position is empty
-        if target_position == '0':
+        # instantiating variables to hold the current x, y, and color
+        current_x = self.get_x_position()
+        current_y = self.get_y_position()
+        piece_color = self.get_color()
 
-            # If the x position is + or - 1 and the y position is constant
-            if (self.__x_position + 1 == x_pos or self.__x_position - 1 == x_pos) and self.__y_position == y_pos:
-                return True
+        print(current_x)
+        print(current_y)
+        print(x_pos)
+        print(y_pos)
 
-            # If the y position is + or - 1 and the x position is consistent
-            elif (self.__y_position - 1 == y_pos or self.__y_position + 1 == y_pos) and self.__x_position == x_pos:
-                return True
+        # if the general is red
+        if piece_color == 'red':
 
-            # If neither of the above are true, return false
-            else:
+            # if the row position is outside the castle, return false
+            if x_pos < 7 or x_pos > 9:
                 return False
 
-        else:
-            return False
+            # if the column position is outside the castle, return false
+            elif y_pos < 3 or y_pos > 5:
+                return False
+
+            # if the move would not put the piece outside the castle
+            else:
+                # if x value is consistent
+                if current_x == x_pos:
+
+                    # if the y position is the current position + 1
+                    if y_pos == current_y + 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the y position is the current position - 1
+                    elif y_pos == current_y - 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
+
+                # If the y value is consistent
+                elif current_y == y_pos:
+
+                    # if the x position is the current position + 1
+                    if x_pos == current_x + 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the x position is the current position - 1
+                    elif x_pos == current_x - 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
+
+        # if the general is black
+        elif piece_color == 'black':
+
+            # if the row position is outside the castle, return false
+            if x_pos < 0 or x_pos > 2:
+                return False
+
+            # if the column position is outside the castle, return false
+            elif y_pos < 3 or y_pos > 5:
+                return False
+
+            else:
+
+                # if x value is consistent
+                if current_x == x_pos:
+                    print('y is changing')
+
+                    # if the y position is the current position + 1
+                    if y_pos == current_y + 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the y position is the current position - 1
+                    elif y_pos == current_y - 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
+
+                # If the y value is consistent
+                elif current_y == y_pos:
+                    print('x is changing')
+
+                    # if the x position is the current position + 1
+                    if x_pos == current_x + 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the x position is the current position - 1
+                    elif x_pos == current_x - 1:
+
+                        # if the space is empty
+                        if gameboard[x_pos][y_pos] == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
         
 
 class Advisor(Piece):
@@ -239,6 +358,9 @@ class Advisor(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
+
+    def move(self, x_pos, y_pos, gameboard):
+        pass
 
     def check_move(self, x_pos, y_pos, gameboard):
         pass
@@ -249,6 +371,9 @@ class Elephant(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
+
+    def move(self, x_pos, y_pos, gameboard):
+        pass
 
     def check_move(self, x_pos, y_pos, gameboard):
         pass
@@ -261,6 +386,9 @@ class Horse(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
+    def move(self, x_pos, y_pos, gameboard):
+        pass
+
     def check_move(self, x_pos, y_pos, gameboard):
         print("LOL")
 
@@ -271,6 +399,9 @@ class Chariot(Piece):
 
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
+
+    def move(self, x_pos, y_pos, gameboard):
+        pass
 
     def check_move(self, x_pos, y_pos, gameboard):
 
@@ -292,6 +423,9 @@ class Cannon(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
+    def move(self, x_pos, y_pos, gameboard):
+        pass
+
     def check_move(self, x_pos, y_pos, gameboard):
         pass
 
@@ -303,6 +437,9 @@ class Soldier(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
+    def move(self, x_pos, y_pos, gameboard):
+        pass
+
     def check_move(self, x_pos, y_pos, gameboard):
         pass
 
@@ -312,7 +449,7 @@ if __name__ == '__main__':
     board = Board()
     board.print_board()
     game = XiangqiGame()
-    move_result = game.make_move('a10', 'a4')
+    move_result = game.make_move('e10', 'e9')
 
     """
     black_in_check = game.is_in_check('black')
