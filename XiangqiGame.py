@@ -72,6 +72,9 @@ class Board:
     def get_piece(self, x, y):
         return self.__gameBoard[x][y]
 
+    def get_board(self):
+        return self.__gameBoard
+
     def print_board(self):
         """The print board function"""
 
@@ -153,8 +156,14 @@ class XiangqiGame:
         # instantiate a variable to hold the space being moved to on the game board
         moved_to_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
 
+        # instantiate a variable to hold the game board
+        board = self.__gameBoard.get_board()
+
         # call function to move the piece passing in the moved-to location
-        moving_piece.move(to_row_pos, to_col_pos, moved_to_space)
+        moving_piece.check_move(to_row_pos, to_col_pos, board)
+
+
+
 
 
 class Piece:
@@ -165,11 +174,14 @@ class Piece:
         self.__y_position = y
         self.__color = color
 
-    def move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
         pass
 
-    def check_move(self, x_pos, y_pos, target_position):
-        pass
+    def get_x_position(self):
+        return self.__x_position
+
+    def get_y_position(self):
+        return self.__y_position
 
     def get_color(self):
         return self.__color
@@ -181,6 +193,7 @@ class General(Piece):
     def __init__(self, x, y, color):
         super(General, self).__init__(x, y, color)
 
+    """
     def move(self, x_pos, y_pos, target_position):
 
         valid_move = self.check_move(x_pos, y_pos, target_position)
@@ -190,16 +203,17 @@ class General(Piece):
             pass
         else:
             return False
-        """
+        
         if x_pos == self.x and (y_pos == self.y - 1 or y_pos == self.y + 1):
             if target_space == '0':
                 valid_move == True
-        """
+        
 
         if valid_move is False:
             return False
+    """
 
-    def check_move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
 
         # if targeted position is empty
         if target_position == '0':
@@ -218,9 +232,7 @@ class General(Piece):
 
         else:
             return False
-
-    def get_color(self):
-        return self.__color
+        
 
 class Advisor(Piece):
     """"""
@@ -228,9 +240,8 @@ class Advisor(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
         pass
-
 
 
 class Elephant(Piece):
@@ -239,7 +250,7 @@ class Elephant(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
         pass
 
 
@@ -250,7 +261,7 @@ class Horse(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
         print("LOL")
 
 
@@ -261,19 +272,19 @@ class Chariot(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
 
-        if self.x == x_pos:
+        print(self.get_x_position())
+        print(self.get_y_position())
 
-        if self.y == y_pos:
+        if x_pos == self.get_x_position():
+            print("x same")
+
+        if y_pos == self.get_y_position():
+            print("y same")
 
         print("MOVIN")
 
-    def check_move(self, x_pos, y_pos, target_position):
-
-        if self.x == x_pos:
-
-        if self.y == y_pos:
 
 class Cannon(Piece):
     """"""
@@ -281,7 +292,7 @@ class Cannon(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
         pass
 
 
@@ -292,7 +303,7 @@ class Soldier(Piece):
     def __init__(self, x, y, color):
         super().__init__(x, y, color)
 
-    def move(self, x_pos, y_pos, target_position):
+    def check_move(self, x_pos, y_pos, gameboard):
         pass
 
 
@@ -301,7 +312,8 @@ if __name__ == '__main__':
     board = Board()
     board.print_board()
     game = XiangqiGame()
-    move_result = game.make_move('a10', 'e3')
+    move_result = game.make_move('a10', 'a4')
+
     """
     black_in_check = game.is_in_check('black')
     game.make_move('e7', 'e6')
