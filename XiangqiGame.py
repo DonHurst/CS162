@@ -310,12 +310,90 @@ class XiangqiGame:
                         return False
 
     def check_move_advisor(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        pass
 
+        # if moving piece is red
+        if moving_piece.get_color() == 'red':
+
+            # if the row position is outside the castle, return false
+            if to_row_pos < 7 or to_row_pos > 9:
+                return False
+
+            # if the column position is outside the castle, return false
+            elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            else:
+
+                # checking the diagonal position row + 1 | col - 1
+                if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos - 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+
+                # checking the diagonal position row + 1 | col + 1
+                if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+
+                # checking the diagonal position row - 1 | col - 1
+                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+
+                # checking the diagonal position row - 1 | col + 1
+                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+
+        # if moving piece is black
+        if moving_piece.get_color() == 'black':
+
+            # if the row position is outside the castle, return false
+            if to_row_pos < 0 or to_row_pos > 2:
+                return False
+
+            # if the column position is outside the castle, return false
+            elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            else:
+
+                # checking the diagonal position row + 1 | col - 1
+                if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos - 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+
+                # checking the diagonal position row + 1 | col + 1
+                if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+
+                # checking the diagonal position row - 1 | col - 1
+                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+
+                # checking the diagonal position row - 1 | col + 1
+                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
+
+                    # if the position is empty
+                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                        return True
+                           
     def check_move_elephant(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        pass
-
-    def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
         pass
 
     def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
@@ -396,7 +474,7 @@ if __name__ == '__main__':
     board = Board()
     board.print_board()
     game = XiangqiGame()
-    move_result = game.make_move('e10', 'e9')
+    move_result = game.make_move('d10', 'e9')
 
     """
     black_in_check = game.is_in_check('black')
