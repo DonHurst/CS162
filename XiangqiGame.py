@@ -201,6 +201,8 @@ class XiangqiGame:
             return self.check_move_soldier(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
 
     def check_move_general(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+
+        # if moving piece is red
         if moving_piece.get_color() == 'red':
 
             # if the row position is outside the castle, return false
@@ -311,6 +313,9 @@ class XiangqiGame:
 
     def check_move_advisor(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
 
+        # instantiate variable to hold the targeted space
+        target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
+
         # if moving piece is red
         if moving_piece.get_color() == 'red':
 
@@ -327,30 +332,54 @@ class XiangqiGame:
                 # checking the diagonal position row + 1 | col - 1
                 if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos - 1:
 
+
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
                         return True
+
+                    # if the position is held by opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
+
 
                 # checking the diagonal position row + 1 | col + 1
                 if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
+                        return True
+
+                    elif target_space.get_color() == 'black':
                         return True
 
                 # checking the diagonal position row - 1 | col - 1
                 if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
 
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
                         return True
+
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
 
                 # checking the diagonal position row - 1 | col + 1
                 if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
                         return True
+
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
 
         # if moving piece is black
         if moving_piece.get_color() == 'black':
@@ -369,32 +398,137 @@ class XiangqiGame:
                 if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos - 1:
 
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
                         return True
+
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
 
                 # checking the diagonal position row + 1 | col + 1
                 if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
                         return True
+
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
 
                 # checking the diagonal position row - 1 | col - 1
                 if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
 
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
                         return True
+
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
 
                 # checking the diagonal position row - 1 | col + 1
                 if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
-                    if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                    if target_space == '0':
                         return True
+
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
                            
     def check_move_elephant(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        pass
+
+        target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
+
+        # if color is red
+        if moving_piece.get_color() == 'red':
+
+            # check if row position would cross the river
+            if to_row_pos < 5:
+                return False
+
+            # check diagonal position, row + 2 | column - 2
+            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos - 2:
+
+                # check if the intermediate position is empty, return false if it isn't
+                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos - 1) != '0':
+                    return False
+
+                # if the targeted space is empty, return true
+                if target_space == '0':
+                    return True
+
+                elif target_space.get_color() == 'black':
+                    return True
+
+                else:
+                    return False
+
+            # check diagonal position, row + 2 | column + 2
+            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 2:
+
+                # check if the intermediate position is empty, return false if it isn't
+                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos + 1) != '0':
+                    return False
+
+                # if the targeted space is empty, return true
+                if target_space == '0':
+                    return True
+
+                elif target_space.get_color() == 'black':
+                    return True
+
+                else:
+                    return False
+
+            # check diagonal position, row - 2 | column - 2
+            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 2:
+
+                # check if the intermediate position is empty, return false if it isn't
+                if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos - 1) != '0':
+                    return False
+
+                # if the targeted space is empty, return true
+                if target_space == '0':
+                    return True
+
+                elif target_space.get_color() == 'black':
+                    return True
+
+                else:
+                    return False
+
+            # check diagonal position, row - 2 | column + 2
+            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos + 2:
+
+                # check if the intermediate position is empty, return false if it isn't
+                if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos + 1) != '0':
+                    return False
+
+                # if the targeted space is empty, return true
+                if target_space == '0':
+                    return True
+
+                elif target_space.get_color() == 'black':
+                    return True
+
+                else:
+                    return False
+
+
+        # if color is black
+        if moving_piece.get_color() == 'black':
+            pass
 
     def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
         pass
