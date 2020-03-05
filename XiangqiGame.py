@@ -96,127 +96,13 @@ class XiangqiGame:
         self.__gameBoard = Board()
         self.__letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
         self.__current_turn = 'red'
+        self.__game_state = 'UNFINISHED'
 
     def get_game_state(self):
-        pass
+        return self.__game_state
 
     def is_in_check(self, color):
         pass
-
-    def check_move(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos):
-        moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
-
-        if isinstance(moving_piece, General):
-            return self.check_move_general(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
-
-    def check_move_general(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-            if moving_piece.get_color() == 'red':
-
-                # if the row position is outside the castle, return false
-                if to_row_pos < 7 or to_row_pos > 9:
-                    return False
-
-                # if the column position is outside the castle, return false
-                elif to_col_pos < 3 or to_col_pos > 5:
-                    return False
-
-                # if the move would not put the piece outside the castle
-                else:
-                    # if x value is consistent
-                    if from_row_pos == to_row_pos:
-
-                        # if the y position is the current position + 1
-                        if to_col_pos == from_col_pos + 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the y position is the current position - 1
-                        elif to_col_pos == from_col_pos - 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the move is not an increment of 1, return false
-                        else:
-                            return False
-
-                    # If the y value is consistent
-                    elif from_col_pos == to_col_pos:
-
-                        # if the x position is the current position + 1
-                        if to_row_pos == from_row_pos + 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the x position is the current position - 1
-                        elif to_row_pos == from_row_pos - 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the move is not an increment of 1, return false
-                        else:
-                            return False
-
-            elif moving_piece.get_color() == 'black':
-
-                # if the row position is outside the castle, return false
-                if to_row_pos < 0 or to_row_pos > 2:
-                    return False
-
-                # if the column position is outside the castle, return false
-                elif to_col_pos < 3 or to_col_pos > 5:
-                    return False
-
-                else:
-
-                    # if x value is consistent
-                    if from_row_pos == to_row_pos:
-
-                        # if the y position is the current position + 1
-                        if to_col_pos == from_col_pos + 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the y position is the current position - 1
-                        elif to_col_pos == from_col_pos - 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the move is not an increment of 1, return false
-                        else:
-                            return False
-
-                    # If the y value is consistent
-                    elif from_col_pos == to_col_pos:
-
-                        # if the x position is the current position + 1
-                        if to_row_pos == from_row_pos + 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the x position is the current position - 1
-                        elif to_row_pos == from_row_pos - 1:
-
-                            # if the space is empty
-                            if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
-                                return True
-
-                        # if the move is not an increment of 1, return false
-                        else:
-                            return False
 
     def make_move(self, pos_from, pos_to):
         """
@@ -289,6 +175,160 @@ class XiangqiGame:
 
         else:
             return False
+
+    def check_move(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos):
+        moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
+
+        if isinstance(moving_piece, General):
+            return self.check_move_general(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
+
+        elif isinstance(moving_piece, Advisor):
+            return self.check_move_advisor(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
+
+        elif isinstance(moving_piece, Elephant):
+            return self.check_move_elephant(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
+
+        elif isinstance(moving_piece, Horse):
+            return self.check_move_horse(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
+
+        elif isinstance(moving_piece, Chariot):
+            return self.check_move_chariot(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
+
+        elif isinstance(moving_piece, Cannon):
+            return self.check_move_cannon(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
+
+        elif isinstance(moving_piece, Soldier):
+            return self.check_move_soldier(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
+
+    def check_move_general(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        if moving_piece.get_color() == 'red':
+
+            # if the row position is outside the castle, return false
+            if to_row_pos < 7 or to_row_pos > 9:
+                return False
+
+            # if the column position is outside the castle, return false
+            elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            # if the move would not put the piece outside the castle
+            else:
+                # if x value is consistent
+                if from_row_pos == to_row_pos:
+
+                    # if the y position is the current position + 1
+                    if to_col_pos == from_col_pos + 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the y position is the current position - 1
+                    elif to_col_pos == from_col_pos - 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
+
+                # If the y value is consistent
+                elif from_col_pos == to_col_pos:
+
+                    # if the x position is the current position + 1
+                    if to_row_pos == from_row_pos + 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the x position is the current position - 1
+                    elif to_row_pos == from_row_pos - 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
+
+        elif moving_piece.get_color() == 'black':
+
+            # if the row position is outside the castle, return false
+            if to_row_pos < 0 or to_row_pos > 2:
+                return False
+
+            # if the column position is outside the castle, return false
+            elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            else:
+
+                # if x value is consistent
+                if from_row_pos == to_row_pos:
+
+                    # if the y position is the current position + 1
+                    if to_col_pos == from_col_pos + 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the y position is the current position - 1
+                    elif to_col_pos == from_col_pos - 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
+
+                # If the y value is consistent
+                elif from_col_pos == to_col_pos:
+
+                    # if the x position is the current position + 1
+                    if to_row_pos == from_row_pos + 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the x position is the current position - 1
+                    elif to_row_pos == from_row_pos - 1:
+
+                        # if the space is empty
+                        if self.__gameBoard.get_piece(to_row_pos, to_col_pos) == '0':
+                            return True
+
+                    # if the move is not an increment of 1, return false
+                    else:
+                        return False
+
+    def check_move_advisor(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        pass
+
+    def check_move_elephant(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        pass
+
+    def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        pass
+
+    def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        pass
+
+    def check_move_chariot(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        pass
+
+    def check_move_cannon(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        pass
+
+    def check_move_soldier(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        pass
 
 
 class Piece:
