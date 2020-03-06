@@ -954,7 +954,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'red':
 
             # if piece has just crossed the river
-            if from_row_pos == 5:
+            if from_row_pos > 5:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
@@ -1019,7 +1019,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'black':
 
             # if piece has just crossed the river
-            if from_row_pos == 4:
+            if from_row_pos < 4:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
