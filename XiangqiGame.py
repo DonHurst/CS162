@@ -108,6 +108,8 @@ class XiangqiGame:
         """
         """
 
+        print(self.__current_turn)
+
         # if the length of the from value is greater than 2 (aka if 10 is entered)
         if len(pos_from) > 2:
 
@@ -605,8 +607,7 @@ class XiangqiGame:
                         return True
 
                     else:
-                        return Fals
-
+                        return False
 
     def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
 
@@ -760,10 +761,151 @@ class XiangqiGame:
                 else:
                     return False
 
-
-
         # if color is black
         if moving_piece.get_color() == 'black':
+
+            # check piece move row - 2| col + 1
+            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos + 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
+            # check piece move row - 2| col - 1
+            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
+
+            # check piece move row + 2| col - 1
+            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos - 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
+
+            # check piece move row + 2| col + 1
+            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
+
+            # check piece move col - 2 | row - 1
+            if to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos - 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos, from_col_pos - 1) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
+
+            # check piece move col - 2 | row + 1
+            if to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos + 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos, from_col_pos - 1) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
+
+            # check piece move col + 2 | row - 1
+            if to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos - 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos, from_col_pos + 1) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
+
+            # check piece move col + 2 | row + 1
+            if to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos + 1:
+
+                # check if the horse is blocked. IF it is, return False
+                if self.__gameBoard.get_piece(from_row_pos, from_col_pos + 1) != '0':
+                    return False
+
+                # if the target space is empty, return True
+                if target_space == '0':
+                    return True
+
+                # if the target space is an opposing piece, return True
+                elif target_space.get_color() == 'red':
+                    return True
+
+                else:
+                    return False
 
 
     def check_move_chariot(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
@@ -841,7 +983,9 @@ if __name__ == '__main__':
     board = Board()
     board.print_board()
     game = XiangqiGame()
-    move_result = game.make_move('c10', 'e8')
+    game.make_move('b10', 'c8')
+    game.make_move('b1', 'c3')
+    game.make_move('c8', 'e9')
 
     """
     black_in_check = game.is_in_check('black')
