@@ -24,50 +24,50 @@ class Board:
             self.__gameBoard.append(board_y)
 
         # Initialize Soldier Piece Placement
-        self.__gameBoard[3][0] = Soldier('black')
-        self.__gameBoard[3][2] = Soldier('black')
-        self.__gameBoard[3][4] = Soldier('black')
-        self.__gameBoard[3][6] = Soldier('black')
-        self.__gameBoard[3][8] = Soldier('black')
-        self.__gameBoard[6][0] = Soldier('red')
-        self.__gameBoard[6][2] = Soldier('red')
-        self.__gameBoard[6][4] = Soldier('red')
-        self.__gameBoard[6][6] = Soldier('red')
-        self.__gameBoard[6][8] = Soldier('red')
+        self.__gameBoard[3][0] = Soldier('red')
+        self.__gameBoard[3][2] = Soldier('red')
+        self.__gameBoard[3][4] = Soldier('red')
+        self.__gameBoard[3][6] = Soldier('red')
+        self.__gameBoard[3][8] = Soldier('red')
+        self.__gameBoard[6][0] = Soldier('black')
+        self.__gameBoard[6][2] = Soldier('black')
+        self.__gameBoard[6][4] = Soldier('black')
+        self.__gameBoard[6][6] = Soldier('black')
+        self.__gameBoard[6][8] = Soldier('black')
 
         # initialize Cannon Piece Placement
-        self.__gameBoard[2][1] = Cannon('black')
-        self.__gameBoard[2][7] = Cannon('black')
-        self.__gameBoard[7][1] = Cannon('red')
-        self.__gameBoard[7][7] = Cannon('red')
+        self.__gameBoard[2][1] = Cannon('red')
+        self.__gameBoard[2][7] = Cannon('red')
+        self.__gameBoard[7][1] = Cannon('black')
+        self.__gameBoard[7][7] = Cannon('black')
 
         # initialize Chariot Piece Placement
-        self.__gameBoard[0][0] = Chariot('black')
-        self.__gameBoard[0][8] = Chariot('black')
-        self.__gameBoard[9][0] = Chariot('red')
-        self.__gameBoard[9][8] = Chariot('red')
+        self.__gameBoard[0][0] = Chariot('red')
+        self.__gameBoard[0][8] = Chariot('red')
+        self.__gameBoard[9][0] = Chariot('black')
+        self.__gameBoard[9][8] = Chariot('black')
 
         # Initialize Horse Piece Placement
-        self.__gameBoard[0][1] = Horse('black')
-        self.__gameBoard[0][7] = Horse('black')
-        self.__gameBoard[9][1] = Horse('red')
-        self.__gameBoard[9][7] = Horse('red')
+        self.__gameBoard[0][1] = Horse('red')
+        self.__gameBoard[0][7] = Horse('red')
+        self.__gameBoard[9][1] = Horse('black')
+        self.__gameBoard[9][7] = Horse('black')
 
         # Initialize Elephant Piece Placement
-        self.__gameBoard[0][2] = Elephant('black')
-        self.__gameBoard[0][6] = Elephant('black')
-        self.__gameBoard[9][2] = Elephant('red')
-        self.__gameBoard[9][6] = Elephant('red')
+        self.__gameBoard[0][2] = Elephant('red')
+        self.__gameBoard[0][6] = Elephant('red')
+        self.__gameBoard[9][2] = Elephant('black')
+        self.__gameBoard[9][6] = Elephant('black')
 
         # Initialize Advisor Piece Placement
-        self.__gameBoard[0][3] = Advisor('black')
-        self.__gameBoard[0][5] = Advisor('black')
-        self.__gameBoard[9][3] = Advisor('red')
-        self.__gameBoard[9][5] = Advisor('red')
+        self.__gameBoard[0][3] = Advisor('red')
+        self.__gameBoard[0][5] = Advisor('red')
+        self.__gameBoard[9][3] = Advisor('black')
+        self.__gameBoard[9][5] = Advisor('black')
 
         # Initialize General Piece Placement
-        self.__gameBoard[0][4] = General('black')
-        self.__gameBoard[9][4] = General('red')
+        self.__gameBoard[0][4] = General('red')
+        self.__gameBoard[9][4] = General('black')
 
     def get_piece(self, x, y):
         return self.__gameBoard[x][y]
@@ -79,7 +79,7 @@ class Board:
         """The print board function"""
 
         row_counter = 1
-        for row in self.__gameBoard:
+        for row in reversed(self.__gameBoard):
 
             print(row)
             row_counter += 1
@@ -172,6 +172,8 @@ class XiangqiGame:
 
             self.__gameBoard.print_board()
 
+            return True
+
         else:
             return False
 
@@ -209,7 +211,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'red':
 
             # if the row position is outside the castle, return false
-            if to_row_pos < 7 or to_row_pos > 9:
+            if to_row_pos < 0 or to_row_pos > 2:
                 return False
 
             # if the column position is outside the castle, return false
@@ -267,7 +269,7 @@ class XiangqiGame:
         elif moving_piece.get_color() == 'black':
 
             # if the row position is outside the castle, return false
-            if to_row_pos < 0 or to_row_pos > 2:
+            if to_row_pos < 7 or to_row_pos > 9:
                 return False
 
             # if the column position is outside the castle, return false
@@ -331,7 +333,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'red':
 
             # if the row position is outside the castle, return false
-            if to_row_pos < 7 or to_row_pos > 9:
+            if to_row_pos < 0 or to_row_pos > 2:
                 return False
 
             # if the column position is outside the castle, return false
@@ -400,7 +402,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'black':
 
             # if the row position is outside the castle, return false
-            if to_row_pos < 0 or to_row_pos > 2:
+            if to_row_pos < 7 or to_row_pos > 9:
                 return False
 
             # if the column position is outside the castle, return false
@@ -474,7 +476,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'red':
 
             # check if row position would cross the river
-            if to_row_pos < 5:
+            if to_row_pos > 4:
                 return False
 
             # check diagonal position, row + 2 | column - 2
@@ -553,7 +555,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'black':
 
             # if the piece would cross the river
-            if to_row_pos > 4:
+            if to_row_pos < 5:
                 return False
 
             # check diagonal position, row + 2 | column - 2
@@ -952,7 +954,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'red':
 
             # if piece has just crossed the river
-            if from_row_pos == 4:
+            if from_row_pos == 5:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
@@ -1017,7 +1019,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'black':
 
             # if piece has just crossed the river
-            if from_row_pos == 5:
+            if from_row_pos == 4:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
@@ -1146,13 +1148,14 @@ if __name__ == '__main__':
     board = Board()
     board.print_board()
     game = XiangqiGame()
-    game.make_move('e7', 'e6')
+    game.make_move('e1', 'e2')
+    """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
     game.make_move('c5', 'c6')
     game.make_move('e5', 'f5')
     game.make_move('c6', 'd6')
-
+    """
     """
     black_in_check = game.is_in_check('black')
     game.make_move('e7', 'e6')
