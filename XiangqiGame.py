@@ -108,8 +108,6 @@ class XiangqiGame:
         """
         """
 
-        print(self.__current_turn)
-
         # if the length of the from value is greater than 2 (aka if 10 is entered)
         if len(pos_from) > 2:
 
@@ -153,6 +151,7 @@ class XiangqiGame:
 
         valid_move = self.check_move(from_row_pos, from_col_pos, to_row_pos, to_col_pos)
         print(valid_move)
+
         board = self.__gameBoard.get_board()
 
         # if the move is valid
@@ -261,6 +260,10 @@ class XiangqiGame:
                     else:
                         return False
 
+                # if move is not valid
+                else:
+                    return False
+
         elif moving_piece.get_color() == 'black':
 
             # if the row position is outside the castle, return false
@@ -315,6 +318,10 @@ class XiangqiGame:
                     else:
                         return False
 
+                # if move is not valid
+                else:
+                    return False
+
     def check_move_advisor(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
 
         # instantiate variable to hold the targeted space
@@ -350,7 +357,7 @@ class XiangqiGame:
 
 
                 # checking the diagonal position row + 1 | col + 1
-                if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
+                elif to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
                     if target_space == '0':
@@ -360,7 +367,7 @@ class XiangqiGame:
                         return True
 
                 # checking the diagonal position row - 1 | col - 1
-                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
+                elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
 
                     # if the position is empty
                     if target_space == '0':
@@ -373,7 +380,7 @@ class XiangqiGame:
                         return False
 
                 # checking the diagonal position row - 1 | col + 1
-                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
+                elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
                     if target_space == '0':
@@ -384,6 +391,10 @@ class XiangqiGame:
 
                     else:
                         return False
+
+                # if move is not valid
+                else:
+                    return False
 
         # if moving piece is black
         if moving_piece.get_color() == 'black':
@@ -412,7 +423,7 @@ class XiangqiGame:
                         return False
 
                 # checking the diagonal position row + 1 | col + 1
-                if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
+                elif to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
                     if target_space == '0':
@@ -425,7 +436,7 @@ class XiangqiGame:
                         return False
 
                 # checking the diagonal position row - 1 | col - 1
-                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
+                elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos - 1:
 
                     # if the position is empty
                     if target_space == '0':
@@ -438,7 +449,7 @@ class XiangqiGame:
                         return False
 
                 # checking the diagonal position row - 1 | col + 1
-                if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
+                elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos + 1:
 
                     # if the position is empty
                     if target_space == '0':
@@ -449,7 +460,11 @@ class XiangqiGame:
 
                     else:
                         return False
-                           
+
+                # if move is not valid
+                else:
+                    return False
+
     def check_move_elephant(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
 
         # instantiate variable to hold the targeted space
@@ -480,7 +495,7 @@ class XiangqiGame:
                     return False
 
             # check diagonal position, row + 2 | column + 2
-            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 2:
+            elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 2:
 
                 # check if the intermediate position is empty, return false if it isn't
                 if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos + 1) != '0':
@@ -497,7 +512,7 @@ class XiangqiGame:
                     return False
 
             # check diagonal position, row - 2 | column - 2
-            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 2:
+            elif to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 2:
 
                 # check if the intermediate position is empty, return false if it isn't
                 if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos - 1) != '0':
@@ -514,7 +529,7 @@ class XiangqiGame:
                     return False
 
             # check diagonal position, row - 2 | column + 2
-            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos + 2:
+            elif to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos + 2:
 
                 # check if the intermediate position is empty, return false if it isn't
                 if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos + 1) != '0':
@@ -529,6 +544,10 @@ class XiangqiGame:
 
                 else:
                     return False
+
+            # if move is not valid
+            else:
+                return False
 
         # if color is black
         if moving_piece.get_color() == 'black':
@@ -556,7 +575,7 @@ class XiangqiGame:
                     return False
 
             # check diagonal position, row + 2 | column + 2
-            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 2:
+            elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 2:
 
                 # check if the intermediate position is empty, return false if it isn't
                 if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos + 1) != '0':
@@ -574,7 +593,7 @@ class XiangqiGame:
                     return False
 
             # check diagonal position, row - 2 | column - 2
-            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 2:
+            elif to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 2:
 
                     # check if the intermediate position is empty, return false if it isn't
                     if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos - 1) != '0':
@@ -592,7 +611,7 @@ class XiangqiGame:
                         return False
 
             # check diagonal position, row - 2 | column + 2
-            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos + 2:
+            elif to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos + 2:
 
                     # check if the intermediate position is empty, return false if it isn't
                     if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos + 1) != '0':
@@ -608,6 +627,9 @@ class XiangqiGame:
 
                     else:
                         return False
+
+            else:
+                return False
 
     def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
 
@@ -635,7 +657,7 @@ class XiangqiGame:
                 else:
                     return False
             # check piece move row - 2| col - 1
-            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 1:
+            elif to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos) != '0':
@@ -653,7 +675,7 @@ class XiangqiGame:
                     return False
 
             # check piece move row + 2| col - 1
-            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos - 1:
+            elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos):
@@ -671,7 +693,7 @@ class XiangqiGame:
                     return False
 
             # check piece move row + 2| col + 1
-            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 1:
+            elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos):
@@ -689,7 +711,7 @@ class XiangqiGame:
                     return False
 
             # check piece move col - 2 | row - 1
-            if to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos - 1:
+            elif to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos - 1) != '0':
@@ -708,7 +730,7 @@ class XiangqiGame:
 
 
             # check piece move col - 2 | row + 1
-            if to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos + 1:
+            elif to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos + 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos - 1) != '0':
@@ -726,7 +748,7 @@ class XiangqiGame:
                     return False
 
             # check piece move col + 2 | row - 1
-            if to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos - 1:
+            elif to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos + 1) != '0':
@@ -744,7 +766,7 @@ class XiangqiGame:
                     return False
 
             # check piece move col + 2 | row + 1
-            if to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos + 1:
+            elif to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos + 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos + 1) != '0':
@@ -760,6 +782,10 @@ class XiangqiGame:
 
                 else:
                     return False
+
+            # if move is not valid
+            else:
+                return False
 
         # if color is black
         if moving_piece.get_color() == 'black':
@@ -782,7 +808,7 @@ class XiangqiGame:
                 else:
                     return False
             # check piece move row - 2| col - 1
-            if to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 1:
+            elif to_row_pos == from_row_pos - 2 and to_col_pos == from_col_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos - 1, from_col_pos) != '0':
@@ -800,7 +826,7 @@ class XiangqiGame:
                     return False
 
             # check piece move row + 2| col - 1
-            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos - 1:
+            elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos) != '0':
@@ -818,7 +844,7 @@ class XiangqiGame:
                     return False
 
             # check piece move row + 2| col + 1
-            if to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 1:
+            elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos) != '0':
@@ -836,7 +862,7 @@ class XiangqiGame:
                     return False
 
             # check piece move col - 2 | row - 1
-            if to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos - 1:
+            elif to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos - 1) != '0':
@@ -854,7 +880,7 @@ class XiangqiGame:
                     return False
 
             # check piece move col - 2 | row + 1
-            if to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos + 1:
+            elif to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos + 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos - 1) != '0':
@@ -872,7 +898,7 @@ class XiangqiGame:
                     return False
 
             # check piece move col + 2 | row - 1
-            if to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos - 1:
+            elif to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos + 1) != '0':
@@ -890,7 +916,7 @@ class XiangqiGame:
                     return False
 
             # check piece move col + 2 | row + 1
-            if to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos + 1:
+            elif to_col_pos == from_col_pos + 2 and to_row_pos == from_row_pos + 1:
 
                 # check if the horse is blocked. IF it is, return False
                 if self.__gameBoard.get_piece(from_row_pos, from_col_pos + 1) != '0':
@@ -907,6 +933,10 @@ class XiangqiGame:
                 else:
                     return False
 
+            # if move is not valid
+            else:
+                return False
+
 
     def check_move_chariot(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
         pass
@@ -915,7 +945,140 @@ class XiangqiGame:
         pass
 
     def check_move_soldier(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        pass
+
+        # instantiate variable for the target space
+        target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
+
+        if moving_piece.get_color() == 'red':
+
+            # if piece has just crossed the river
+            if from_row_pos == 4:
+
+                # if horizontal move to the right
+                if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
+
+                    # if the space is empty
+                    if target_space == '0':
+                        return True
+
+                    # if the space is a piece of opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
+
+                # if horizontal move to the left
+                elif from_row_pos == to_row_pos and to_col_pos == from_col_pos - 1:
+
+                    # if the space is empty
+                    if target_space == '0':
+                        return True
+
+                    # if the space is a piece of opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
+
+                # if move is straight forward
+                elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos:
+
+                    # if the space is empty
+                    if target_space == '0':
+                        return True
+
+                    # if the space is a piece of opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
+
+            # if the soldier moves forward one space
+            if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos:
+
+                # if the space is empty
+                if target_space == '0':
+                    return True
+
+                # if the space is a piece of opposing color
+                elif target_space.get_color() == 'black':
+                    return True
+
+                else:
+                    return False
+
+            # if the move is not valid
+            else:
+                return False
+
+        if moving_piece.get_color() == 'black':
+
+            # if piece has just crossed the river
+            if from_row_pos == 5:
+
+                # if horizontal move to the right
+                if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
+
+                    # if the space is empty
+                    if target_space == '0':
+                        return True
+
+                    # if the space is a piece of opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
+
+                # if horizontal move to the left
+                elif from_row_pos == to_row_pos and to_col_pos == from_col_pos - 1:
+
+                    # if the space is empty
+                    if target_space == '0':
+                        return True
+
+                    # if the space is a piece of opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
+
+                        # if the soldier moves forward one space
+
+                elif to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos:
+
+                    # if the space is empty
+                    if target_space == '0':
+                        return True
+
+                    # if the space is a piece of opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
+
+            # if the soldier is moving straight forward
+            if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos:
+
+                    # if the space is empty
+                    if target_space == '0':
+                        return True
+
+                    # if the space is a piece of opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
+
+            # if move is not valid
+            else:
+                return False
 
 
 class Piece:
@@ -983,9 +1146,12 @@ if __name__ == '__main__':
     board = Board()
     board.print_board()
     game = XiangqiGame()
-    game.make_move('b10', 'c8')
-    game.make_move('b1', 'c3')
-    game.make_move('c8', 'e9')
+    game.make_move('e7', 'e6')
+    game.make_move('c4', 'c5')
+    game.make_move('e6', 'e5')
+    game.make_move('c5', 'c6')
+    game.make_move('e5', 'f5')
+    game.make_move('c6', 'd6')
 
     """
     black_in_check = game.is_in_check('black')
