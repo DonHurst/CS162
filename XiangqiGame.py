@@ -70,9 +70,11 @@ class Board:
         self.__gameBoard[9][4] = General('black')
 
     def get_piece(self, x, y):
+        """"""
         return self.__gameBoard[x][y]
 
     def get_board(self):
+        """"""
         return self.__gameBoard
 
     def print_board(self):
@@ -86,9 +88,7 @@ class Board:
 
 
 class XiangqiGame:
-    """
-
-    """
+    """ """
 
     def __init__(self):
         """Init function for the game initializes the game board and a list to hold the corresponding letter values
@@ -99,14 +99,108 @@ class XiangqiGame:
         self.__game_state = 'UNFINISHED'
 
     def get_game_state(self):
+        """"""
         return self.__game_state
 
     def is_in_check(self, color):
-        pass
+        """"""
+
+        # if the color to check is red
+        if color == 'red':
+
+            # nested for loop steps through the possible locations in the castle to find the general
+            for row in range(0, 3):
+                for col in range(3, 6):
+
+                    # checking if each space is an instance of the general class. If so, set that position as a tuple
+                    if isinstance(self.__gameBoard.get_piece(row, col), General):
+                        general_position = (row, col)
+
+            print(general_position)
+
+            # nested for loop to step through board
+            for row in range(0, 10):
+                for col in range(0, 9):
+
+                    # set current piece equal to the current space on the board
+                    current_piece = self.__gameBoard.get_piece(row, col)
+
+                    # if the current space is empty, continue to next loop iteration
+                    if current_piece == '0':
+                        continue
+
+                    # if the current piece's color is black
+                    if current_piece.get_color() == 'black':
+
+                        # check if a move to take the general would be valid
+                        valid_move = self.check_move(row, col, general_position[0], general_position[1])
+
+                        # if said move is valid, return True
+                        if valid_move is True:
+                            return True
+
+            # if all pieces are checked and none have general in check, return false
+            return False
+
+        # if the color to check is black
+        elif color == 'black':
+
+            # nested for loop steps through the possible locations in the castle to find the general
+            for row in range(7, 10):
+                for col in range(3, 6):
+
+                    # checking if each space is an instance of the general class. If so, set that position as a tuple
+                    if isinstance(self.__gameBoard.get_piece(row, col), General):
+                        general_position = (row, col)
+
+            print(general_position)
+
+            # nested for loop to step through board
+            for row in range(0, 10):
+                for col in range(0, 9):
+
+                    # set current piece equal to the current space on the board
+                    current_piece = self.__gameBoard.get_piece(row, col)
+
+                    # if the current space is empty, continue to next loop iteration
+                    if current_piece == '0':
+                        continue
+
+                    # if the current piece's color is black
+                    if current_piece.get_color() == 'red':
+
+                        # check if a move to take the general would be valid
+                        valid_move = self.check_move(row, col, general_position[0], general_position[1])
+
+                        # if said move is valid, return True
+                        if valid_move is True:
+                            return True
+
+            # if all pieces are checked and none have general in check, return false
+            return False
+
+        # if the color entered is not valid, return False
+        else:
+            return False
+
+    def is_in_checkmate(self, general_row, general_column):
+        """"""
+
+        the_general = self.__gameBoard.get_piece(general_row, general_column)
+
+
+
+
+
+
 
     def make_move(self, pos_from, pos_to):
         """
         """
+
+        # if the game is done, return false
+        if self.__game_state != "UNFINISHED":
+            return False
 
         # if the length of the from value is greater than 2 (aka if 10 is entered)
         if len(pos_from) > 2:
@@ -178,6 +272,7 @@ class XiangqiGame:
             return False
 
     def check_move(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos):
+        """"""
 
         moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
 
@@ -203,6 +298,7 @@ class XiangqiGame:
             return self.check_move_soldier(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
 
     def check_move_general(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        """"""
 
         # instantiate variable to hold the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -325,6 +421,7 @@ class XiangqiGame:
                     return False
 
     def check_move_advisor(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        """"""
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -468,6 +565,7 @@ class XiangqiGame:
                     return False
 
     def check_move_elephant(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        """"""
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -634,6 +732,7 @@ class XiangqiGame:
                 return False
 
     def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        """"""
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -940,6 +1039,7 @@ class XiangqiGame:
                 return False
 
     def check_move_chariot(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        """"""
 
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
 
@@ -1124,7 +1224,7 @@ class XiangqiGame:
                     for x in range(from_row_pos - 1, to_row_pos):
 
                         # if statement to check if any of the spaces are not empty
-                        if self.__gameBoard.get_piece(x, to_col_pos):
+                        if self.__gameBoard.get_piece(x, to_col_pos) != '0':
                             return False
 
                     # if the target space is empty, return true
@@ -1143,13 +1243,260 @@ class XiangqiGame:
             else:
                 return False
 
-
-
-
     def check_move_cannon(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        pass
+        """"""
+
+        # instantiate variable for the target space
+        target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
+
+        # instantiate list to hold interim spaces
+        interim_spaces = []
+
+        # if piece color is red
+        if moving_piece.get_color == 'red':
+
+            # if the row position is consistent
+            if from_row_pos == to_row_pos:
+
+                # if the piece is moving right
+                if to_col_pos > from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos + 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'black':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+                # if the piece is moving left
+                elif to_col_pos < from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos - 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
+
+            # if the column position is consistent
+            elif from_col_pos == to_col_pos:
+
+                # if the piece is moving up
+                if to_row_pos > from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos + 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
+
+                # if the piece is moving down
+                elif to_row_pos < from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos - 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'black':
+                        return True
+
+                    else:
+                        return False
+
+            # if the move isn't valid
+            else:
+                return False
+
+        elif moving_piece.get_color == 'black':
+
+            # if the row position is consistent
+            if from_row_pos == to_row_pos:
+
+                # if the piece is moving right
+                if to_col_pos > from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos + 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'red':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+                # if the piece is moving left
+                elif to_col_pos < from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos - 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
+
+            # if the column position is consistent
+            elif from_col_pos == to_col_pos:
+
+                # if the piece is moving up
+                if to_row_pos > from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos + 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
+
+                # if the piece is moving down
+                elif to_row_pos < from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos - 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos) != '0':
+                            interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
+
+                    # if there are no pieces between the cannon and it's target location
+                    if len(interim_spaces) == 0:
+
+                        # if the target space is empty, return true
+                        if target_space == '0':
+                            return True
+
+                        else:
+                            return False
+
+                    # if there is exactly one piece between the cannon and targeted space
+                    elif len(interim_spaces) == 1 and target_space.get_color() == 'red':
+                        return True
+
+                    else:
+                        return False
+
+            # if the move isn't valid
+            else:
+                return False
 
     def check_move_soldier(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
+        """"""
 
         # instantiate variable for the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -1287,7 +1634,7 @@ class XiangqiGame:
 
 
 class Piece:
-    """"""
+    """Piece parent class. Initializes with a color and has a function to return that color"""
 
     def __init__(self, color):
         self.__color = color
@@ -1297,49 +1644,49 @@ class Piece:
 
 
 class General(Piece):
-    """"""
+    """General Child class"""
 
     def __init__(self, color):
         super().__init__(color)
 
 
 class Advisor(Piece):
-    """"""
+    """Advisor child class. Inherits members and functionality from Piece class"""
 
     def __init__(self, color):
         super().__init__(color)
 
 
 class Elephant(Piece):
-    """"""
+    """Elephant child class. Inherits members and functionality from Piece class"""
 
     def __init__(self, color):
         super().__init__(color)
 
 
 class Horse(Piece):
-    """"""
+    """Horse child class. Inherits members and functionality from Piece class"""
 
     def __init__(self, color):
         super().__init__(color)
 
 
 class Chariot(Piece):
-    """"""
+    """Chariot child class. Inherits members and functionality from Piece class"""
 
     def __init__(self, color):
         super().__init__(color)
 
 
 class Cannon(Piece):
-    """"""
+    """Cannon child class. Inherits members and functionality from Piece class"""
 
     def __init__(self, color):
         super().__init__(color)
 
 
 class Soldier(Piece):
-    """"""
+    """Soldier child class. Inherits members and functionality from Piece class"""
 
     def __init__(self, color):
         super().__init__(color)
@@ -1349,8 +1696,13 @@ class Soldier(Piece):
 if __name__ == '__main__':
 
     game = XiangqiGame()
-    game.make_move('a1', 'a2')
+    game.make_move('e1', 'e2')
     game.make_move('a10', 'a9')
+    game.make_move('e2', 'e3')
+    game.make_move('i10', 'i9')
+    game.make_move('e3', 'f3')
+    red_check = game.is_in_check('red')
+    print(red_check)
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
