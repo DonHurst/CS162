@@ -939,9 +939,212 @@ class XiangqiGame:
             else:
                 return False
 
-
     def check_move_chariot(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        pass
+
+        target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
+
+        if moving_piece.get_color() == 'red':
+
+            # if the row position is consistent
+            if from_row_pos == to_row_pos:
+
+                # if the piece is moving right
+                if to_col_pos > from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos + 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                         return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+                # if the piece is moving left
+                elif to_col_pos < from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos - 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                        return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+            # if the column position is consistent
+            elif from_col_pos == to_col_pos:
+
+                # if the piece is moving up
+                if to_row_pos > from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos + 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos) != '0':
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                        return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+                # if the piece is moving down
+                elif to_row_pos < from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos - 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos):
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                         return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'black':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+            # if the move isn't valid
+            else:
+                return False
+
+        if moving_piece.get_color() == 'black':
+
+            # if the row position is consistent
+            if from_row_pos == to_row_pos:
+
+                # if the piece is moving right
+                if to_col_pos > from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos + 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                        return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+                        # if the piece is moving left
+                elif to_col_pos < from_col_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_col_pos - 1, to_col_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(from_row_pos, x) != '0':
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                        return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+            # if the column position is consistent
+            elif from_col_pos == to_col_pos:
+
+                # if the piece is moving up
+                if to_row_pos > from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos + 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos) != '0':
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                        return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+                # if the piece is moving down
+                elif to_row_pos < from_row_pos:
+
+                    # for loop to step through all the interim pieces
+                    for x in range(from_row_pos - 1, to_row_pos):
+
+                        # if statement to check if any of the spaces are not empty
+                        if self.__gameBoard.get_piece(x, to_col_pos):
+                            return False
+
+                    # if the target space is empty, return true
+                    if target_space == '0':
+                        return True
+
+                    # if the target space is an opposing color
+                    elif target_space.get_color() == 'red':
+                        return True
+
+                    # if move isn't valid
+                    else:
+                        return False
+
+            # if the move isn't valid
+            else:
+                return False
+
+
+
 
     def check_move_cannon(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
         pass
@@ -1145,10 +1348,9 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
 
-    board = Board()
-    board.print_board()
     game = XiangqiGame()
-    game.make_move('e1', 'e2')
+    game.make_move('a1', 'a2')
+    game.make_move('a10', 'a9')
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
