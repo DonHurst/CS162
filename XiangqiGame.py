@@ -933,7 +933,7 @@ class XiangqiGame:
             elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos - 1:
 
                 # check if the horse is blocked. IF it is, return False
-                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos):
+                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos) != '0':
                     return False
 
                 # if the target space is empty, return True
@@ -951,7 +951,7 @@ class XiangqiGame:
             elif to_row_pos == from_row_pos + 2 and to_col_pos == from_col_pos + 1:
 
                 # check if the horse is blocked. IF it is, return False
-                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos):
+                if self.__gameBoard.get_piece(from_row_pos + 1, from_col_pos) != '0':
                     return False
 
                 # if the target space is empty, return True
@@ -1407,7 +1407,7 @@ class XiangqiGame:
         interim_spaces = []
 
         # if piece color is red
-        if moving_piece.get_color == 'red':
+        if moving_piece.get_color() == 'red':
 
             # if the row position is consistent
             if from_row_pos == to_row_pos:
@@ -1422,13 +1422,10 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
-
-                        # if the target space is empty, return true
-                        if target_space == '0':
+                    if target_space == '0':
+                        # if there are no pieces between the cannon and it's target location
+                        if len(interim_spaces) == 0:
                             return True
-
                         else:
                             return False
 
@@ -1450,13 +1447,9 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
-
-                        # if the target space is empty, return true
-                        if target_space == '0':
+                    if target_space == '0':
+                        if len(interim_spaces) == 0:
                             return True
-
                         else:
                             return False
 
@@ -1480,11 +1473,9 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
-
-                        # if the target space is empty, return true
-                        if target_space == '0':
+                    if target_space == '0':
+                        # if there are no pieces between the cannon and it's target location
+                        if len(interim_spaces) == 0:
                             return True
 
                         else:
@@ -1507,11 +1498,10 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
+                    if target_space == '0':
+                        # if there are no pieces between the cannon and it's target location
+                        if len(interim_spaces) == 0:
 
-                        # if the target space is empty, return true
-                        if target_space == '0':
                             return True
 
                         else:
@@ -1528,7 +1518,7 @@ class XiangqiGame:
             else:
                 return False
 
-        elif moving_piece.get_color == 'black':
+        elif moving_piece.get_color() == 'black':
 
             # if the row position is consistent
             if from_row_pos == to_row_pos:
@@ -1543,11 +1533,10 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
+                    if target_space == '0':
+                        # if there are no pieces between the cannon and it's target location
+                        if len(interim_spaces) == 0:
 
-                        # if the target space is empty, return true
-                        if target_space == '0':
                             return True
 
                         else:
@@ -1571,13 +1560,10 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(from_row_pos, x))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
-
-                        # if the target space is empty, return true
-                        if target_space == '0':
+                    if target_space == '0':
+                        # if there are no pieces between the cannon and it's target location
+                        if len(interim_spaces) == 0:
                             return True
-
                         else:
                             return False
 
@@ -1601,20 +1587,17 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
+                    if target_space == '0':
 
-                        # if the target space is empty, return true
-                        if target_space == '0':
+                        # if there are no pieces between the cannon and it's target location
+                        if len(interim_spaces) == 0:
                             return True
-
                         else:
                             return False
 
                     # if there is exactly one piece between the cannon and targeted space
                     elif len(interim_spaces) == 1 and target_space.get_color() == 'red':
                         return True
-
                     else:
                         return False
 
@@ -1628,13 +1611,11 @@ class XiangqiGame:
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
                             interim_spaces.append(self.__gameBoard.get_piece(x, to_col_pos))
 
-                    # if there are no pieces between the cannon and it's target location
-                    if len(interim_spaces) == 0:
+                    if target_space == '0':
 
-                        # if the target space is empty, return true
-                        if target_space == '0':
+                        # if there are no pieces between the cannon and it's target location
+                        if len(interim_spaces) == 0:
                             return True
-
                         else:
                             return False
 
@@ -1648,6 +1629,9 @@ class XiangqiGame:
             # if the move isn't valid
             else:
                 return False
+
+        else:
+            return False
 
     def check_move_soldier(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
         """"""
