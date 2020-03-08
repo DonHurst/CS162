@@ -105,18 +105,41 @@ class XiangqiGame:
     def is_in_check(self, color):
         """"""
 
+        # get red general position
+        # nested for loop steps through the possible locations in the castle to find the general
+        for row in range(0, 3):
+            for col in range(3, 6):
+
+                # checking if each space is an instance of the general class. If so, set that position as a tuple
+                if isinstance(self.__gameBoard.get_piece(row, col), General):
+                    red_general_position = (row, col)
+
+        # nested for loop steps through the possible locations in the castle to find the general
+        for row in range(7, 10):
+            for col in range(3, 6):
+
+                # checking if each space is an instance of the general class. If so, set that position as a tuple
+                if isinstance(self.__gameBoard.get_piece(row, col), General):
+                    black_general_position = (row, col)
+
+        # If generals are in the same column (flying general check)
+        if red_general_position[1] == black_general_position[1]:
+
+            # instantiate list to hold pieces between generals
+            pieces_between_generals = []
+
+            # step through all pieces between the generals
+            for row in range(0, 10):
+
+                 # add any non empty space to the list
+                if self.__gameBoard.get_piece(row, red_general_position[1]) != '0':
+                    pieces_between_generals.append(self.__gameBoard.get_piece(row, red_general_position[1]))
+
+            if len(pieces_between_generals) == '0':
+                return True
+
         # if the color to check is red
         if color == 'red':
-
-            # nested for loop steps through the possible locations in the castle to find the general
-            for row in range(0, 3):
-                for col in range(3, 6):
-
-                    # checking if each space is an instance of the general class. If so, set that position as a tuple
-                    if isinstance(self.__gameBoard.get_piece(row, col), General):
-                        general_position = (row, col)
-
-            print(general_position)
 
             # nested for loop to step through board
             for row in range(0, 10):
@@ -133,7 +156,7 @@ class XiangqiGame:
                     if current_piece.get_color() == 'black':
 
                         # check if a move to take the general would be valid
-                        valid_move = self.check_move(row, col, general_position[0], general_position[1])
+                        valid_move = self.check_move(row, col, red_general_position[0], red_general_position[1])
 
                         # if said move is valid, return True
                         if valid_move is True:
@@ -144,16 +167,6 @@ class XiangqiGame:
 
         # if the color to check is black
         elif color == 'black':
-
-            # nested for loop steps through the possible locations in the castle to find the general
-            for row in range(7, 10):
-                for col in range(3, 6):
-
-                    # checking if each space is an instance of the general class. If so, set that position as a tuple
-                    if isinstance(self.__gameBoard.get_piece(row, col), General):
-                        general_position = (row, col)
-
-            print(general_position)
 
             # nested for loop to step through board
             for row in range(0, 10):
@@ -170,7 +183,7 @@ class XiangqiGame:
                     if current_piece.get_color() == 'red':
 
                         # check if a move to take the general would be valid
-                        valid_move = self.check_move(row, col, general_position[0], general_position[1])
+                        valid_move = self.check_move(row, col, black_general_position[0], black_general_position[1])
 
                         # if said move is valid, return True
                         if valid_move is True:
@@ -182,17 +195,6 @@ class XiangqiGame:
         # if the color entered is not valid, return False
         else:
             return False
-
-    def is_in_checkmate(self, general_row, general_column):
-        """"""
-
-        the_general = self.__gameBoard.get_piece(general_row, general_column)
-
-
-
-
-
-
 
     def make_move(self, pos_from, pos_to):
         """
@@ -256,6 +258,24 @@ class XiangqiGame:
 
             # change the starting position to empty space
             board[from_row_pos][from_col_pos] = '0'
+
+            if moving_piece.get_color() == 'red':
+
+                # check if move put own general in check. If so, return pieces to original position and return False
+                red_general_check = self.is_in_check('red')
+                if red_general_check is True:
+                    board[from_row_pos][from_col_pos] = moving_piece
+                    board[to_row_pos][to_col_pos] = '0'
+                    return False
+
+            if moving_piece.get_color() == 'black':
+
+                # check if move put own general in check. If so, return pieces to original position and return False
+                black_general_check = self.is_in_check('black')
+                if black_general_check is True:
+                    board[from_row_pos][from_col_pos] = moving_piece
+                    board[to_row_pos][to_col_pos] = '0'
+                    return False
 
             # change the color of the current turn
             if self.__current_turn == 'red':
