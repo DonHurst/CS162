@@ -202,98 +202,123 @@ class XiangqiGame:
         invalid_moves = []
 
         if color == 'red':
-            # get red general position
-            # nested for loop steps through the possible locations in the castle to find the general
-            for row in range(0, 3):
-                for col in range(3, 6):
 
-                    # checking if each space is an instance of the general class. If so, set that position as a tuple
-                    if isinstance(self.__gameBoard.get_piece(row, col), General):
-                        the_general = self.__gameBoard.get_piece(row, col)
-                        curr_row = row
-                        curr_col = col
+            any_valid_moves = self.try_all_moves('red')
 
-            # check move left
-            left = self.check_move(curr_row,curr_col, curr_row, curr_col - 1)
-            if left is True:
+            if any_valid_moves is True:
+                return False
 
-                # move the general left
-                board[curr_row][curr_col - 1] = the_general
-                board[curr_row][curr_col] = '0'
-                
-                checker = self.is_in_check('red')
+            else:
+                return True
 
-                # move the general back to starting position
-                board[curr_row][curr_col - 1] = '0'
-                board[curr_row][curr_col] = the_general
+        if color == 'black':
 
-                if checker is True:
-                    invalid_moves.append(checker)
+            any_valid_moves = self.try_all_moves('black')
 
-            # check move right
-            right = self.check_move(curr_row, curr_col, curr_row, curr_col + 1)
-            if right is True:
+            if any_valid_moves is True:
+                return False
 
-                # move the general right
-                board[curr_row][curr_col + 1] = the_general
-                board[curr_row][curr_col] = '0'
+            else:
+                return True
 
-                checker = self.is_in_check('red')
+    def test_move(self, from_row, from_col, to_row, to_col):
 
-                # move the general back to starting position
-                board[curr_row][curr_col + 1] = '0'
-                board[curr_row][curr_col] = the_general
+        board = self.__gameBoard.get_board()
 
-                if checker is True:
-                    invalid_moves.append(checker)
+        moving_piece = self.__gameBoard.get_piece(from_row, from_col)
 
-            # check move up
-            up = self.check_move(curr_row, curr_col, curr_row + 1, curr_col)
-            if up is True:
+        # make test move
+        board[from_row][from_col] = '0'
+        board[to_row][to_col] = moving_piece
 
-                # move the general up
-                board[curr_row+ 1][curr_col] = the_general
-                board[curr_row][curr_col] = '0'
+        if moving_piece.get_color() == 'red':
+            red_check = self.is_in_check('red')
 
-                checker = self.is_in_check('red')
+            # move piece back
+            board[from_row][from_col] = moving_piece
+            board[to_row][to_col] = '0'
 
-                # move the general back to starting position
-                board[curr_row + 1][curr_col] = '0'
-                board[curr_row][curr_col] = the_general
+            if red_check is True:
+                return False
+            else:
+                return True
 
-                if checker is True:
-                    invalid_moves.append(checker)
+        elif moving_piece.get_color() == 'black':
+            black_check = self.is_in_check('black')
 
-            # check move down
-            down = self.check_move(curr_row, curr_col, curr_row - 1, curr_col)
-            if down is True:
+            # move piece back
+            board[from_row][from_col] = moving_piece
+            board[to_row][to_col] = '0'
 
-                # move the general down
-                board[curr_row - 1][curr_col] = the_general
-                board[curr_row][curr_col] = '0'
-
-                checker = self.is_in_check('red')
-
-                # move the general back to starting position
-                board[curr_row - 1][curr_col] = '0'
-                board[curr_row][curr_col] = the_general
-
-                if checker is True:
-                    invalid_moves.append(checker)
-
-            if len(invalid_moves) == 4:
-                general_cannot_move = True
-
-            if general_cannot_move or pieces_cant_block:
-                pass
-
-
-
-        elif color == 'black':
-            pass
-
+            if black_check is True:
+                return False
+            else:
+                return True
         else:
+            # move piece back
+            board[from_row][from_col] = moving_piece
+            board[to_row][to_col] = '0'
             return False
+
+    def try_all_moves(self, color):
+
+        move_list = []
+
+        if color == 'red':
+
+            # nested for loop to step through board
+            for row in range(0, 10):
+                for col in range(0, 9):
+
+                    current_piece = self.__gameBoard.get_piece(row, col)
+
+                    # if the space is not empty and it's the same color
+                    if current_piece != '0' and current_piece.get_color() == 'red':
+
+                        for x in range(0, 10):
+                            for y in range(0, 9):
+                                valid_move = self.check_move(row, col, x, y)
+
+                                if valid_move is True:
+                                    a_valid_move = self.test_move(row, col, x, y)
+                                    if a_valid_move is True:
+                                        move_list.append(a_valid_move)
+
+                                else:
+                                    continue
+
+            if len(move_list) == 0:
+                return False
+            else:
+                return True
+
+        if color == 'black':
+
+            # nested for loop to step through board
+            for row in range(0, 10):
+                for col in range(0, 9):
+
+                    current_piece = self.__gameBoard.get_piece(row, col)
+
+                    # if the space is not empty and it's the same color
+                    if current_piece != '0' and current_piece.get_color() == 'black':
+
+                        for x in range(0, 10):
+                            for y in range(0, 9):
+                                valid_move = self.check_move(row, col, x, y)
+
+                                if valid_move is True:
+                                    a_valid_move = self.test_move(row, col, x, y)
+                                    if a_valid_move is True:
+                                        move_list.append(a_valid_move)
+
+                                else:
+                                    continue
+
+            if len(move_list) == 0:
+                return False
+            else:
+                return True
 
     def make_move(self, pos_from, pos_to):
         """
@@ -345,6 +370,7 @@ class XiangqiGame:
         to_col_pos = int(self.__letters.index(pos_to[0]))
 
         valid_move = self.check_move(from_row_pos, from_col_pos, to_row_pos, to_col_pos)
+        print(moving_piece)
         print(valid_move)
 
         board = self.__gameBoard.get_board()
@@ -1663,7 +1689,7 @@ class XiangqiGame:
                         return False
 
                 # if move is straight forward
-                elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos:
+                elif to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos:
 
                     # if the space is empty
                     if target_space == '0':
@@ -1677,7 +1703,7 @@ class XiangqiGame:
                         return False
 
             # if the soldier moves forward one space
-            if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos:
+            if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos:
 
                 # if the space is empty
                 if target_space == '0':
@@ -1728,8 +1754,7 @@ class XiangqiGame:
                         return False
 
                         # if the soldier moves forward one space
-
-                elif to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos:
+                elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos:
 
                     # if the space is empty
                     if target_space == '0':
@@ -1743,7 +1768,7 @@ class XiangqiGame:
                         return False
 
             # if the soldier is moving straight forward
-            if to_row_pos == from_row_pos + 1 and to_col_pos == from_col_pos:
+            if to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos:
 
                     # if the space is empty
                     if target_space == '0':
@@ -1822,15 +1847,51 @@ class Soldier(Piece):
 
 
 if __name__ == '__main__':
-
     game = XiangqiGame()
+    game.make_move('c1', 'e3')
+    game.make_move('e7', 'e6')
+    game.make_move('b1', 'd2')
+    game.make_move('h10', 'g8')
+    game.make_move('h1', 'i3')
+    game.make_move('g10', 'e8')
+    game.make_move('h3', 'g3')
+    game.make_move('i7', 'i6')
+    game.make_move('i1', 'h1')
+    game.make_move('g7', 'g6')
+    game.make_move('d2', 'f3')
+    game.make_move('h8', 'i8')
+    game.make_move('d1', 'e2')
+    game.make_move('b8', 'd8')
+    game.make_move('a1', 'd1')
+    game.make_move('b10', 'c8')
+    game.make_move('g4', 'g5')
+    game.make_move('d10', 'e9')
+    game.make_move('g5', 'g6')
+    game.make_move('g8', 'f6')
+    game.make_move('g3', 'g2')
+    game.make_move('f6', 'e4')
+    game.make_move('d1', 'd4')
+    game.make_move('a10', 'b10')
+    game.make_move('d4', 'e4')
+    game.make_move('i8', 'i4')
+    game.make_move('e1', 'd1')
+    game.make_move('b10', 'b3')
+    game.make_move('f3', 'e5')
+    game.make_move('i10', 'i7')
+    game.make_move('h1', 'h10')
+    game.make_move('e6', 'e5')
+    game.make_move('h10', 'f10')
+    game.make_move('e10', 'f10')
+    game.make_move('e4', 'i4')
+    game.make_move('d1', 'e1')
+    game.make_move('i7', 'd7')
+    game.make_move('c4', 'c5')
+    game.make_move('b3', 'b1')
+    game.make_move('e2', 'd1')
+    game.make_move('b1', 'd1')
     game.make_move('e1', 'e2')
-    game.make_move('a10', 'a9')
-    game.make_move('e2', 'e3')
-    game.make_move('i10', 'i9')
-    game.make_move('e3', 'f3')
-    red_check = game.is_in_check('red')
-    print(red_check)
+    game.make_move('d7', 'd2')
+
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
