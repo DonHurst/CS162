@@ -196,6 +196,105 @@ class XiangqiGame:
         else:
             return False
 
+    def is_in_checkmate(self, color):
+
+        board = self.__gameBoard.get_board()
+        invalid_moves = []
+
+        if color == 'red':
+            # get red general position
+            # nested for loop steps through the possible locations in the castle to find the general
+            for row in range(0, 3):
+                for col in range(3, 6):
+
+                    # checking if each space is an instance of the general class. If so, set that position as a tuple
+                    if isinstance(self.__gameBoard.get_piece(row, col), General):
+                        the_general = self.__gameBoard.get_piece(row, col)
+                        curr_row = row
+                        curr_col = col
+
+            # check move left
+            left = self.check_move(curr_row,curr_col, curr_row, curr_col - 1)
+            if left is True:
+
+                # move the general left
+                board[curr_row][curr_col - 1] = the_general
+                board[curr_row][curr_col] = '0'
+                
+                checker = self.is_in_check('red')
+
+                # move the general back to starting position
+                board[curr_row][curr_col - 1] = '0'
+                board[curr_row][curr_col] = the_general
+
+                if checker is True:
+                    invalid_moves.append(checker)
+
+            # check move right
+            right = self.check_move(curr_row, curr_col, curr_row, curr_col + 1)
+            if right is True:
+
+                # move the general right
+                board[curr_row][curr_col + 1] = the_general
+                board[curr_row][curr_col] = '0'
+
+                checker = self.is_in_check('red')
+
+                # move the general back to starting position
+                board[curr_row][curr_col + 1] = '0'
+                board[curr_row][curr_col] = the_general
+
+                if checker is True:
+                    invalid_moves.append(checker)
+
+            # check move up
+            up = self.check_move(curr_row, curr_col, curr_row + 1, curr_col)
+            if up is True:
+
+                # move the general up
+                board[curr_row+ 1][curr_col] = the_general
+                board[curr_row][curr_col] = '0'
+
+                checker = self.is_in_check('red')
+
+                # move the general back to starting position
+                board[curr_row + 1][curr_col] = '0'
+                board[curr_row][curr_col] = the_general
+
+                if checker is True:
+                    invalid_moves.append(checker)
+
+            # check move down
+            down = self.check_move(curr_row, curr_col, curr_row - 1, curr_col)
+            if down is True:
+
+                # move the general down
+                board[curr_row - 1][curr_col] = the_general
+                board[curr_row][curr_col] = '0'
+
+                checker = self.is_in_check('red')
+
+                # move the general back to starting position
+                board[curr_row - 1][curr_col] = '0'
+                board[curr_row][curr_col] = the_general
+
+                if checker is True:
+                    invalid_moves.append(checker)
+
+            if len(invalid_moves) == 4:
+                general_cannot_move = True
+
+            if general_cannot_move or pieces_cant_block:
+                pass
+
+
+
+        elif color == 'black':
+            pass
+
+        else:
+            return False
+
     def make_move(self, pos_from, pos_to):
         """
         """
@@ -259,23 +358,32 @@ class XiangqiGame:
             # change the starting position to empty space
             board[from_row_pos][from_col_pos] = '0'
 
+            red_general_check = self.is_in_check('red')
+            black_general_check = self.is_in_check('black')
+
             if moving_piece.get_color() == 'red':
 
                 # check if move put own general in check. If so, return pieces to original position and return False
-                red_general_check = self.is_in_check('red')
                 if red_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
                     return False
 
+                if black_general_check is True:
+                    if self.is_in_checkmate('black') is True:
+                        self.__game_state = 'RED_WINS'
+
             if moving_piece.get_color() == 'black':
 
                 # check if move put own general in check. If so, return pieces to original position and return False
-                black_general_check = self.is_in_check('black')
                 if black_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
                     return False
+
+                if red_general_check is True:
+                    if self.is_in_checkmate('red') is True:
+                        self.__game_state = 'BLACK_WINS'
 
             # change the color of the current turn
             if self.__current_turn == 'red':
@@ -343,14 +451,14 @@ class XiangqiGame:
                     if to_col_pos == from_col_pos + 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'black':
                             return True
 
                     # if the y position is the current position - 1
                     elif to_col_pos == from_col_pos - 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'black':
                             return True
 
                     # if the move is not an increment of 1, return false
@@ -364,14 +472,14 @@ class XiangqiGame:
                     if to_row_pos == from_row_pos + 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'black':
                             return True
 
                     # if the x position is the current position - 1
                     elif to_row_pos == from_row_pos - 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'black':
                             return True
 
                     # if the move is not an increment of 1, return false
@@ -401,14 +509,14 @@ class XiangqiGame:
                     if to_col_pos == from_col_pos + 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'red':
                             return True
 
                     # if the y position is the current position - 1
                     elif to_col_pos == from_col_pos - 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'red':
                             return True
 
                     # if the move is not an increment of 1, return false
@@ -422,14 +530,14 @@ class XiangqiGame:
                     if to_row_pos == from_row_pos + 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'red':
                             return True
 
                     # if the x position is the current position - 1
                     elif to_row_pos == from_row_pos - 1:
 
                         # if the space is empty
-                        if target_space == '0':
+                        if target_space == '0' or target_space.get_color() == 'red':
                             return True
 
                     # if the move is not an increment of 1, return false
