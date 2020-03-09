@@ -199,7 +199,6 @@ class XiangqiGame:
     def is_in_checkmate(self, color):
 
         board = self.__gameBoard.get_board()
-        invalid_moves = []
 
         if color == 'red':
 
@@ -355,6 +354,7 @@ class XiangqiGame:
         if moving_piece.get_color() != self.__current_turn:
             return False
 
+
         # if the length of the 2 value is greater than 2 (aka if 10 is entered)
         if len(pos_to) > 2:
 
@@ -397,7 +397,7 @@ class XiangqiGame:
 
                 if black_general_check is True:
                     if self.is_in_checkmate('black') is True:
-                        self.__game_state = 'RED_WINS'
+                        self.__game_state = 'RED_WON'
 
             if moving_piece.get_color() == 'black':
 
@@ -409,7 +409,7 @@ class XiangqiGame:
 
                 if red_general_check is True:
                     if self.is_in_checkmate('red') is True:
-                        self.__game_state = 'BLACK_WINS'
+                        self.__game_state = 'BLACK_WON'
 
             # change the color of the current turn
             if self.__current_turn == 'red':
@@ -1829,7 +1829,6 @@ class Soldier(Piece):
         super().__init__(color)
 
 
-
 if __name__ == '__main__':
     game = XiangqiGame()
     game.make_move('c1', 'e3')
@@ -1858,7 +1857,6 @@ if __name__ == '__main__':
     game.make_move('a10', 'b10')
     game.make_move('d4', 'e4')
     game.make_move('i8', 'i4')
-    """
     game.make_move('e1', 'd1')
     game.make_move('b10', 'b3')
     game.make_move('f3', 'e5')
@@ -1876,7 +1874,9 @@ if __name__ == '__main__':
     game.make_move('b1', 'd1')
     game.make_move('e1', 'e2')
     game.make_move('d7', 'd2')
-    """
+    print(game.is_in_check('black'))
+    print(game.is_in_checkmate('black'))
+
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
