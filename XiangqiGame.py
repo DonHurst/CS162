@@ -1642,7 +1642,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'red':
 
             # if piece has just crossed the river
-            if from_row_pos > 5:
+            if from_row_pos > 4:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
@@ -1707,7 +1707,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'black':
 
             # if piece has just crossed the river
-            if from_row_pos < 4:
+            if from_row_pos < 5:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
@@ -1832,32 +1832,13 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    game.make_move('c1', 'e3')
-    game.make_move('e7', 'e6')
-    game.make_move('b1', 'd2')
-    game.make_move('h10', 'g8')
-    game.make_move('h1', 'i3')
-    game.make_move('g10', 'e8')
-    game.make_move('h3', 'g3')
+    game.make_move('a4', 'a5')
+    game.make_move('a7', 'a6')
+    game.make_move('a5', 'a6')
     game.make_move('i7', 'i6')
-    game.make_move('i1', 'h1')
-    game.make_move('g7', 'g6')
-    game.make_move('d2', 'f3')
-    game.make_move('h8', 'i8')
-    game.make_move('d1', 'e2')
-    game.make_move('b8', 'd8')
-    game.make_move('a1', 'd1')
-    game.make_move('b10', 'c8')
-    game.make_move('g4', 'g5')
-    game.make_move('d10', 'e9')
-    game.make_move('g5', 'g6')
-    game.make_move('g8', 'f6')
-    game.make_move('g3', 'g2')
-    game.make_move('f6', 'e4')
-    game.make_move('d1', 'd4')
-    game.make_move('a10', 'b10')
-    game.make_move('d4', 'e4')
-    game.make_move('i8', 'i4')
+    game.make_move('a6', 'b6')
+    game.make_move('i6', 'i5')
+    game.make_move('b6', 'a6')
     """
     game.make_move('e1', 'd1')
     game.make_move('b10', 'b3')
