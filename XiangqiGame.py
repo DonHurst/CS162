@@ -1492,7 +1492,7 @@ class XiangqiGame:
                 elif to_row_pos < from_row_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_row_pos - 1, to_row_pos):
+                    for x in range(to_row_pos + 1, from_row_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
@@ -1605,7 +1605,7 @@ class XiangqiGame:
                 elif to_row_pos < from_row_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_row_pos - 1, to_row_pos):
+                    for x in range(to_row_pos + 1, from_row_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
@@ -1858,6 +1858,7 @@ if __name__ == '__main__':
     game.make_move('a10', 'b10')
     game.make_move('d4', 'e4')
     game.make_move('i8', 'i4')
+    """
     game.make_move('e1', 'd1')
     game.make_move('b10', 'b3')
     game.make_move('f3', 'e5')
@@ -1875,7 +1876,7 @@ if __name__ == '__main__':
     game.make_move('b1', 'd1')
     game.make_move('e1', 'e2')
     game.make_move('d7', 'd2')
-
+    """
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
