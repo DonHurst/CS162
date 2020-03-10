@@ -122,6 +122,7 @@ class XiangqiGame:
                 if isinstance(self.__gameBoard.get_piece(row, col), General):
                     black_general_position = (row, col)
 
+        """
         # If generals are in the same column (flying general check)
         if red_general_position[1] == black_general_position[1]:
 
@@ -137,6 +138,7 @@ class XiangqiGame:
 
             if len(pieces_between_generals) == '0':
                 return True
+        """
 
         # if the color to check is red
         if color == 'red':
@@ -225,6 +227,7 @@ class XiangqiGame:
         board = self.__gameBoard.get_board()
 
         moving_piece = self.__gameBoard.get_piece(from_row, from_col)
+        target_piece = self.__gameBoard.get_piece(to_row, to_col)
 
         # make test move
         board[from_row][from_col] = '0'
@@ -235,7 +238,7 @@ class XiangqiGame:
 
             # move piece back
             board[from_row][from_col] = moving_piece
-            board[to_row][to_col] = '0'
+            board[to_row][to_col] = target_piece
 
             if red_check is True:
                 return False
@@ -247,7 +250,7 @@ class XiangqiGame:
 
             # move piece back
             board[from_row][from_col] = moving_piece
-            board[to_row][to_col] = '0'
+            board[to_row][to_col] = target_piece
 
             if black_check is True:
                 return False
@@ -384,6 +387,9 @@ class XiangqiGame:
             # change the starting position to empty space
             board[from_row_pos][from_col_pos] = '0'
 
+            self.__gameBoard.print_board()
+            print(' ')
+
             red_general_check = self.is_in_check('red')
             black_general_check = self.is_in_check('black')
 
@@ -399,7 +405,7 @@ class XiangqiGame:
                     if self.is_in_checkmate('black') is True:
                         self.__game_state = 'RED_WON'
 
-            if moving_piece.get_color() == 'black':
+            elif moving_piece.get_color() == 'black':
 
                 # check if move put own general in check. If so, return pieces to original position and return False
                 if black_general_check is True:
@@ -1214,11 +1220,11 @@ class XiangqiGame:
 
                     # if the target space is empty, return true
                     if target_space == '0':
-                         return True
+                            return True
 
                     # if the target space is an opposing color
                     elif target_space.get_color() == 'black':
-                        return True
+                            return True
 
                     # if move isn't valid
                     else:
@@ -1228,7 +1234,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1236,11 +1242,11 @@ class XiangqiGame:
 
                     # if the target space is empty, return true
                     if target_space == '0':
-                        return True
+                            return True
 
                     # if the target space is an opposing color
                     elif target_space.get_color() == 'black':
-                        return True
+                            return True
 
                     # if move isn't valid
                     else:
@@ -1275,7 +1281,7 @@ class XiangqiGame:
                 elif to_row_pos < from_row_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_row_pos - 1, to_row_pos):
+                    for x in range(to_row_pos + 1, from_row_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(x, to_col_pos):
@@ -1328,7 +1334,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1375,7 +1381,7 @@ class XiangqiGame:
                 elif to_row_pos < from_row_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_row_pos - 1, to_row_pos):
+                    for x in range(to_row_pos + 1, from_row_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
@@ -1441,7 +1447,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1554,7 +1560,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1642,7 +1648,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'red':
 
             # if piece has just crossed the river
-            if from_row_pos > 5:
+            if from_row_pos > 4:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
@@ -1707,7 +1713,7 @@ class XiangqiGame:
         if moving_piece.get_color() == 'black':
 
             # if piece has just crossed the river
-            if from_row_pos < 4:
+            if from_row_pos < 5:
 
                 # if horizontal move to the right
                 if from_row_pos == to_row_pos and to_col_pos == from_col_pos + 1:
@@ -1831,52 +1837,22 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    game.make_move('c1', 'e3')
-    game.make_move('e7', 'e6')
-    game.make_move('b1', 'd2')
-    game.make_move('h10', 'g8')
-    game.make_move('h1', 'i3')
-    game.make_move('g10', 'e8')
-    game.make_move('h3', 'g3')
-    game.make_move('i7', 'i6')
-    game.make_move('i1', 'h1')
-    game.make_move('g7', 'g6')
-    game.make_move('d2', 'f3')
-    game.make_move('h8', 'i8')
-    game.make_move('d1', 'e2')
-    game.make_move('b8', 'd8')
-    game.make_move('a1', 'd1')
-    game.make_move('b10', 'c8')
-    game.make_move('g4', 'g5')
-    game.make_move('d10', 'e9')
-    game.make_move('g5', 'g6')
-    game.make_move('g8', 'f6')
-    game.make_move('g3', 'g2')
-    game.make_move('f6', 'e4')
-    game.make_move('d1', 'd4')
-    game.make_move('a10', 'b10')
-    game.make_move('d4', 'e4')
-    game.make_move('i8', 'i4')
-    game.make_move('e1', 'd1')
-    game.make_move('b10', 'b3')
-    game.make_move('f3', 'e5')
-    game.make_move('i10', 'i7')
-    game.make_move('h1', 'h10')
-    game.make_move('e6', 'e5')
-    game.make_move('h10', 'f10')
-    game.make_move('e10', 'f10')
-    game.make_move('e4', 'i4')
-    game.make_move('d1', 'e1')
-    game.make_move('i7', 'd7')
-    game.make_move('c4', 'c5')
-    game.make_move('b3', 'b1')
-    game.make_move('e2', 'd1')
-    game.make_move('b1', 'd1')
-    game.make_move('e1', 'e2')
-    game.make_move('d7', 'd2')
-    print(game.is_in_check('black'))
-    print(game.is_in_checkmate('black'))
+    # game.make_move('b3', 'a3')
 
+    game.make_move('a1', 'a2')
+    game.make_move('i10', 'i9')
+    game.make_move('a2', 'e2')
+    game.make_move('i9', 'g9')
+    game.make_move('e2', 'd2')
+    game.make_move('g9', 'i9')
+    game.make_move('d2', 'd4')
+    game.make_move('i9', 'i8')
+    game.make_move('d4', 'd3')
+    game.make_move('i8', 'i9')
+    print(game.make_move('d3', 'd10'))
+    # game.make_move('e9', 'f9')
+    # game.make_move('d2', 'd10')
+    # game.make_move('f9', 'f1')
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
