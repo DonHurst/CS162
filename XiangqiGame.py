@@ -2,9 +2,6 @@
 # Date: 02/22/2020
 # Description:
 
-from typing import List
-
-
 class Board:
     """The Board class """
 
@@ -1833,16 +1830,10 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    game.make_move('e1', 'e2')
+    game.make_move('d1', 'e2')
     game.make_move('e10', 'e9')
-    game.make_move('e2', 'e3')
-    game.make_move('e9', 'e8')
-    game.make_move('e3', 'e2')
-    game.make_move('e8', 'e9')
-    game.make_move('e2', 'd2')
-    game.make_move('e9', 'f9')
-    game.make_move('d2', 'e2')
-    game.make_move('f9', 'f8')
+    game.make_move('e2', 'd3')
+
 
     # game.make_move('d3', 'd10')
     # game.make_move('e7', 'e6')
