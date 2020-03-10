@@ -122,24 +122,6 @@ class XiangqiGame:
                 if isinstance(self.__gameBoard.get_piece(row, col), General):
                     black_general_position = (row, col)
 
-        """
-        # If generals are in the same column (flying general check)
-        if red_general_position[1] == black_general_position[1]:
-
-            # instantiate list to hold pieces between generals
-            pieces_between_generals = []
-
-            # step through all pieces between the generals
-            for row in range(0, 10):
-
-                 # add any non empty space to the list
-                if self.__gameBoard.get_piece(row, red_general_position[1]) != '0':
-                    pieces_between_generals.append(self.__gameBoard.get_piece(row, red_general_position[1]))
-
-            if len(pieces_between_generals) == '0':
-                return True
-        """
-
         # if the color to check is red
         if color == 'red':
 
@@ -424,8 +406,6 @@ class XiangqiGame:
             elif self.__current_turn == 'black':
                 self.__current_turn = 'red'
 
-            self.__gameBoard.print_board()
-
             return True
 
         else:
@@ -472,6 +452,14 @@ class XiangqiGame:
 
             # if the column position is outside the castle, return false
             elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            # if attempted move is top corner of castle
+            if to_row_pos == 2 and (to_col_pos == 3 or to_col_pos == 5):
+                return False
+
+            # if attempted move is bottom corner of castle
+            if to_row_pos == 0 and (to_col_pos == 3 or to_col_pos == 5):
                 return False
 
             # if the move would not put the piece outside the castle
@@ -530,6 +518,14 @@ class XiangqiGame:
 
             # if the column position is outside the castle, return false
             elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            # if attempted move is top corner of castle
+            if to_row_pos == 9 and (to_col_pos == 3 or to_col_pos == 5):
+                return False
+
+            # if attempted move is bottom corner of castle
+            if to_row_pos == 7 and (to_col_pos == 3 or to_col_pos == 5):
                 return False
 
             else:
@@ -1837,19 +1833,19 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    # game.make_move('b3', 'a3')
-
-    game.make_move('a1', 'a2')
-    game.make_move('i10', 'i9')
-    game.make_move('a2', 'e2')
-    game.make_move('i9', 'g9')
+    game.make_move('e1', 'e2')
+    game.make_move('e10', 'e9')
+    game.make_move('e2', 'e3')
+    game.make_move('e9', 'e8')
+    game.make_move('e3', 'e2')
+    game.make_move('e8', 'e9')
     game.make_move('e2', 'd2')
-    game.make_move('g9', 'i9')
-    game.make_move('d2', 'd4')
-    game.make_move('i9', 'i8')
-    game.make_move('d4', 'd3')
-    game.make_move('i8', 'i9')
-    print(game.make_move('d3', 'd10'))
+    game.make_move('e9', 'f9')
+    game.make_move('d2', 'e2')
+    game.make_move('f9', 'f8')
+
+    # game.make_move('d3', 'd10')
+    # game.make_move('e7', 'e6')
     # game.make_move('e9', 'f9')
     # game.make_move('d2', 'd10')
     # game.make_move('f9', 'f1')
