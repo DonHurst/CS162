@@ -2,9 +2,6 @@
 # Date: 02/22/2020
 # Description:
 
-from typing import List
-
-
 class Board:
     """The Board class """
 
@@ -102,6 +99,37 @@ class XiangqiGame:
         """"""
         return self.__game_state
 
+    def generals_facing(self):
+
+        # get red general position
+        # nested for loop steps through the possible locations in the castle to find the general
+        for row in range(0, 3):
+            for col in range(3, 6):
+
+                # checking if each space is an instance of the general class. If so, set that position as a tuple
+                if isinstance(self.__gameBoard.get_piece(row, col), General):
+                    red_general_position = (row, col)
+
+        # nested for loop steps through the possible locations in the castle to find the general
+        for row in range(7, 10):
+            for col in range(3, 6):
+
+                # checking if each space is an instance of the general class. If so, set that position as a tuple
+                if isinstance(self.__gameBoard.get_piece(row, col), General):
+                    black_general_position = (row, col)
+
+        interim = []
+        if red_general_position[1] == black_general_position[1]:
+            for x in range(red_general_position[0] + 1, black_general_position[0]):
+                piece = self.__gameBoard.get_piece(x, black_general_position[1])
+                if piece != '0':
+                    interim.append(piece)
+
+        if len(interim) == 0:
+            return True
+        else:
+            return False
+
     def is_in_check(self, color):
         """"""
 
@@ -121,22 +149,6 @@ class XiangqiGame:
                 # checking if each space is an instance of the general class. If so, set that position as a tuple
                 if isinstance(self.__gameBoard.get_piece(row, col), General):
                     black_general_position = (row, col)
-
-        # If generals are in the same column (flying general check)
-        if red_general_position[1] == black_general_position[1]:
-
-            # instantiate list to hold pieces between generals
-            pieces_between_generals = []
-
-            # step through all pieces between the generals
-            for row in range(0, 10):
-
-                 # add any non empty space to the list
-                if self.__gameBoard.get_piece(row, red_general_position[1]) != '0':
-                    pieces_between_generals.append(self.__gameBoard.get_piece(row, red_general_position[1]))
-
-            if len(pieces_between_generals) == '0':
-                return True
 
         # if the color to check is red
         if color == 'red':
@@ -189,6 +201,7 @@ class XiangqiGame:
                         if valid_move is True:
                             return True
 
+
             # if all pieces are checked and none have general in check, return false
             return False
 
@@ -199,7 +212,6 @@ class XiangqiGame:
     def is_in_checkmate(self, color):
 
         board = self.__gameBoard.get_board()
-        invalid_moves = []
 
         if color == 'red':
 
@@ -226,6 +238,7 @@ class XiangqiGame:
         board = self.__gameBoard.get_board()
 
         moving_piece = self.__gameBoard.get_piece(from_row, from_col)
+        target_piece = self.__gameBoard.get_piece(to_row, to_col)
 
         # make test move
         board[from_row][from_col] = '0'
@@ -236,7 +249,7 @@ class XiangqiGame:
 
             # move piece back
             board[from_row][from_col] = moving_piece
-            board[to_row][to_col] = '0'
+            board[to_row][to_col] = target_piece
 
             if red_check is True:
                 return False
@@ -248,7 +261,7 @@ class XiangqiGame:
 
             # move piece back
             board[from_row][from_col] = moving_piece
-            board[to_row][to_col] = '0'
+            board[to_row][to_col] = target_piece
 
             if black_check is True:
                 return False
@@ -384,6 +397,9 @@ class XiangqiGame:
             # change the starting position to empty space
             board[from_row_pos][from_col_pos] = '0'
 
+            self.__gameBoard.print_board()
+            print(' ')
+
             red_general_check = self.is_in_check('red')
             black_general_check = self.is_in_check('black')
 
@@ -397,9 +413,13 @@ class XiangqiGame:
 
                 if black_general_check is True:
                     if self.is_in_checkmate('black') is True:
-                        self.__game_state = 'RED_WINS'
+                        self.__game_state = 'RED_WON'
 
-            if moving_piece.get_color() == 'black':
+                elif black_general_check is False:
+                    if self.is_in_checkmate('black') is True:
+                        self.__game_state = 'RED_WON'
+
+            elif moving_piece.get_color() == 'black':
 
                 # check if move put own general in check. If so, return pieces to original position and return False
                 if black_general_check is True:
@@ -409,7 +429,11 @@ class XiangqiGame:
 
                 if red_general_check is True:
                     if self.is_in_checkmate('red') is True:
-                        self.__game_state = 'BLACK_WINS'
+                        self.__game_state = 'BLACK_WON'
+
+                elif red_general_check is False:
+                    if self.is_in_checkmate('red') is True:
+                        self.__game_state = 'BLACK_WON'
 
             # change the color of the current turn
             if self.__current_turn == 'red':
@@ -417,8 +441,6 @@ class XiangqiGame:
 
             elif self.__current_turn == 'black':
                 self.__current_turn = 'red'
-
-            self.__gameBoard.print_board()
 
             return True
 
@@ -466,6 +488,14 @@ class XiangqiGame:
 
             # if the column position is outside the castle, return false
             elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            # if attempted move is top corner of castle
+            if to_row_pos == 2 and (to_col_pos == 3 or to_col_pos == 5):
+                return False
+
+            # if attempted move is bottom corner of castle
+            if to_row_pos == 0 and (to_col_pos == 3 or to_col_pos == 5):
                 return False
 
             # if the move would not put the piece outside the castle
@@ -524,6 +554,14 @@ class XiangqiGame:
 
             # if the column position is outside the castle, return false
             elif to_col_pos < 3 or to_col_pos > 5:
+                return False
+
+            # if attempted move is top corner of castle
+            if to_row_pos == 9 and (to_col_pos == 3 or to_col_pos == 5):
+                return False
+
+            # if attempted move is bottom corner of castle
+            if to_row_pos == 7 and (to_col_pos == 3 or to_col_pos == 5):
                 return False
 
             else:
@@ -1214,11 +1252,11 @@ class XiangqiGame:
 
                     # if the target space is empty, return true
                     if target_space == '0':
-                         return True
+                            return True
 
                     # if the target space is an opposing color
                     elif target_space.get_color() == 'black':
-                        return True
+                            return True
 
                     # if move isn't valid
                     else:
@@ -1228,7 +1266,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1236,11 +1274,11 @@ class XiangqiGame:
 
                     # if the target space is empty, return true
                     if target_space == '0':
-                        return True
+                            return True
 
                     # if the target space is an opposing color
                     elif target_space.get_color() == 'black':
-                        return True
+                            return True
 
                     # if move isn't valid
                     else:
@@ -1275,7 +1313,7 @@ class XiangqiGame:
                 elif to_row_pos < from_row_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_row_pos - 1, to_row_pos):
+                    for x in range(to_row_pos + 1, from_row_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(x, to_col_pos):
@@ -1328,7 +1366,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1375,7 +1413,7 @@ class XiangqiGame:
                 elif to_row_pos < from_row_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_row_pos - 1, to_row_pos):
+                    for x in range(to_row_pos + 1, from_row_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(x, to_col_pos) != '0':
@@ -1441,7 +1479,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1554,7 +1592,7 @@ class XiangqiGame:
                 elif to_col_pos < from_col_pos:
 
                     # for loop to step through all the interim pieces
-                    for x in range(from_col_pos - 1, to_col_pos):
+                    for x in range(to_col_pos + 1, from_col_pos):
 
                         # if statement to check if any of the spaces are not empty
                         if self.__gameBoard.get_piece(from_row_pos, x) != '0':
@@ -1829,35 +1867,20 @@ class Soldier(Piece):
         super().__init__(color)
 
 
-
 if __name__ == '__main__':
     game = XiangqiGame()
-    game.make_move('a4', 'a5')
+    game.make_move('e4', 'e5')
+    game.make_move('e7', 'e6')
+    game.make_move('e5', 'e6')
     game.make_move('a7', 'a6')
-    game.make_move('a5', 'a6')
-    game.make_move('i7', 'i6')
-    game.make_move('a6', 'b6')
-    game.make_move('i6', 'i5')
-    game.make_move('b6', 'a6')
-    """
-    game.make_move('e1', 'd1')
-    game.make_move('b10', 'b3')
-    game.make_move('f3', 'e5')
-    game.make_move('i10', 'i7')
-    game.make_move('h1', 'h10')
-    game.make_move('e6', 'e5')
-    game.make_move('h10', 'f10')
-    game.make_move('e10', 'f10')
-    game.make_move('e4', 'i4')
-    game.make_move('d1', 'e1')
-    game.make_move('i7', 'd7')
-    game.make_move('c4', 'c5')
-    game.make_move('b3', 'b1')
-    game.make_move('e2', 'd1')
-    game.make_move('b1', 'd1')
-    game.make_move('e1', 'e2')
-    game.make_move('d7', 'd2')
-    """
+    game.make_move('e6', 'f6')
+
+
+    # game.make_move('d3', 'd10')
+    # game.make_move('e7', 'e6')
+    # game.make_move('e9', 'f9')
+    # game.make_move('d2', 'd10')
+    # game.make_move('f9', 'f1')
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
