@@ -99,6 +99,37 @@ class XiangqiGame:
         """"""
         return self.__game_state
 
+    def generals_facing(self):
+
+        # get red general position
+        # nested for loop steps through the possible locations in the castle to find the general
+        for row in range(0, 3):
+            for col in range(3, 6):
+
+                # checking if each space is an instance of the general class. If so, set that position as a tuple
+                if isinstance(self.__gameBoard.get_piece(row, col), General):
+                    red_general_position = (row, col)
+
+        # nested for loop steps through the possible locations in the castle to find the general
+        for row in range(7, 10):
+            for col in range(3, 6):
+
+                # checking if each space is an instance of the general class. If so, set that position as a tuple
+                if isinstance(self.__gameBoard.get_piece(row, col), General):
+                    black_general_position = (row, col)
+
+        interim = []
+        if red_general_position[1] == black_general_position[1]:
+            for x in range(red_general_position[0] + 1, black_general_position[0]):
+                piece = self.__gameBoard.get_piece(x, black_general_position[1])
+                if piece != '0':
+                    interim.append(piece)
+
+        if len(interim) == 0:
+            return True
+        else:
+            return False
+
     def is_in_check(self, color):
         """"""
 
@@ -169,6 +200,7 @@ class XiangqiGame:
                         # if said move is valid, return True
                         if valid_move is True:
                             return True
+
 
             # if all pieces are checked and none have general in check, return false
             return False
@@ -336,7 +368,6 @@ class XiangqiGame:
         if moving_piece.get_color() != self.__current_turn:
             return False
 
-
         # if the length of the 2 value is greater than 2 (aka if 10 is entered)
         if len(pos_to) > 2:
 
@@ -384,6 +415,10 @@ class XiangqiGame:
                     if self.is_in_checkmate('black') is True:
                         self.__game_state = 'RED_WON'
 
+                elif black_general_check is False:
+                    if self.is_in_checkmate('black') is True:
+                        self.__game_state = 'RED_WON'
+
             elif moving_piece.get_color() == 'black':
 
                 # check if move put own general in check. If so, return pieces to original position and return False
@@ -393,6 +428,10 @@ class XiangqiGame:
                     return False
 
                 if red_general_check is True:
+                    if self.is_in_checkmate('red') is True:
+                        self.__game_state = 'BLACK_WON'
+
+                elif red_general_check is False:
                     if self.is_in_checkmate('red') is True:
                         self.__game_state = 'BLACK_WON'
 
@@ -1830,9 +1869,11 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    game.make_move('d1', 'e2')
-    game.make_move('e10', 'e9')
-    game.make_move('e2', 'd3')
+    game.make_move('e4', 'e5')
+    game.make_move('e7', 'e6')
+    game.make_move('e5', 'e6')
+    game.make_move('a7', 'a6')
+    game.make_move('e6', 'f6')
 
 
     # game.make_move('d3', 'd10')
