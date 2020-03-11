@@ -150,6 +150,12 @@ class XiangqiGame:
                 if isinstance(self.__gameBoard.get_piece(row, col), General):
                     black_general_position = (row, col)
 
+        flying_general = self.generals_facing()
+
+        if flying_general is True:
+            return True
+
+
         # if the color to check is red
         if color == 'red':
 
@@ -396,9 +402,6 @@ class XiangqiGame:
 
             # change the starting position to empty space
             board[from_row_pos][from_col_pos] = '0'
-
-            self.__gameBoard.print_board()
-            print(' ')
 
             red_general_check = self.is_in_check('red')
             black_general_check = self.is_in_check('black')
@@ -1874,6 +1877,7 @@ if __name__ == '__main__':
     game.make_move('e5', 'e6')
     game.make_move('a7', 'a6')
     game.make_move('e6', 'f6')
+    game.make_move('e6', 'e7')
 
 
     # game.make_move('d3', 'd10')
@@ -1881,6 +1885,7 @@ if __name__ == '__main__':
     # game.make_move('e9', 'f9')
     # game.make_move('d2', 'd10')
     # game.make_move('f9', 'f1')
+
     """
     game.make_move('c4', 'c5')
     game.make_move('e6', 'e5')
