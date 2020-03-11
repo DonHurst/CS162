@@ -1,6 +1,9 @@
 # Author: Don Hurst
 # Date: 02/22/2020
-# Description:
+# Description: This file contains all of the definitions for the xiangqi game. This includes a board class, the game
+# class, and classes for each of the pieces. All of the functionality is explained in docstrings at the head of each
+# method
+
 
 class Board:
     """The Board class """
@@ -389,8 +392,6 @@ class XiangqiGame:
         to_col_pos = int(self.__letters.index(pos_to[0]))
 
         valid_move = self.check_move(from_row_pos, from_col_pos, to_row_pos, to_col_pos)
-        print(moving_piece)
-        print(valid_move)
 
         board = self.__gameBoard.get_board()
 
@@ -1872,12 +1873,12 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    game.make_move('e4', 'e5')
-    game.make_move('e7', 'e6')
-    game.make_move('e5', 'e6')
-    game.make_move('a7', 'a6')
-    game.make_move('e6', 'f6')
-    game.make_move('e6', 'e7')
+    print(game.make_move('e4', 'e5'))
+    print(game.make_move('e7', 'e6'))
+    print(game.make_move('e5', 'e6'))
+    print(game.make_move('a7', 'a6'))
+    print(game.make_move('e6', 'f6'))
+    print(game.make_move('e6', 'e7'))
 
 
     # game.make_move('d3', 'd10')
