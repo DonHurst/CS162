@@ -102,37 +102,6 @@ class XiangqiGame:
         """"""
         return self.__game_state
 
-    def generals_facing(self):
-
-        # get red general position
-        # nested for loop steps through the possible locations in the castle to find the general
-        for row in range(0, 3):
-            for col in range(3, 6):
-
-                # checking if each space is an instance of the general class. If so, set that position as a tuple
-                if isinstance(self.__gameBoard.get_piece(row, col), General):
-                    red_general_position = (row, col)
-
-        # nested for loop steps through the possible locations in the castle to find the general
-        for row in range(7, 10):
-            for col in range(3, 6):
-
-                # checking if each space is an instance of the general class. If so, set that position as a tuple
-                if isinstance(self.__gameBoard.get_piece(row, col), General):
-                    black_general_position = (row, col)
-
-        interim = []
-        if red_general_position[1] == black_general_position[1]:
-            for x in range(red_general_position[0] + 1, black_general_position[0]):
-                piece = self.__gameBoard.get_piece(x, black_general_position[1])
-                if piece != '0':
-                    interim.append(piece)
-
-        if len(interim) == 0:
-            return True
-        else:
-            return False
-
     def is_in_check(self, color):
         """"""
 
@@ -153,11 +122,24 @@ class XiangqiGame:
                 if isinstance(self.__gameBoard.get_piece(row, col), General):
                     black_general_position = (row, col)
 
-        flying_general = self.generals_facing()
+        # create an empty list to check if generals are facing
+        interim = []
 
-        if flying_general is True:
-            return True
+        # if the general's column position is equal, search all interim values and append any non empty spaces to list
+        if red_general_position[1] == black_general_position[1]:
+            for x in range(red_general_position[0] + 1, black_general_position[0]):
+                piece = self.__gameBoard.get_piece(x, black_general_position[1])
+                if piece != '0':
+                    interim.append(piece)
 
+            # if the list is empty, the generals are facing. Will return TRUE. Else, continues through function
+            if len(interim) == 0:
+                flying_general = True
+            else:
+                flying_general = False
+
+            if flying_general is True:
+                return True
 
         # if the color to check is red
         if color == 'red':
@@ -219,8 +201,6 @@ class XiangqiGame:
             return False
 
     def is_in_checkmate(self, color):
-
-        board = self.__gameBoard.get_board()
 
         if color == 'red':
 
@@ -413,6 +393,7 @@ class XiangqiGame:
                 if red_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
+                    self.__gameBoard.print_board()
                     return False
 
                 if black_general_check is True:
@@ -1873,14 +1854,20 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
+    print(game.make_move('b1', 'c3'))
+    print(game.make_move('h10', 'g8'))
+    print(game.make_move('c3', 'e2'))
+    print(game.make_move('g8', 'e9'))
+    print(game.make_move('e2', 'g3'))
+    print(game.make_move('e9', 'c8'))
     print(game.make_move('e4', 'e5'))
-    print(game.make_move('e7', 'e6'))
-    print(game.make_move('e5', 'e6'))
-    print(game.make_move('a7', 'a6'))
-    print(game.make_move('e6', 'f6'))
-    print(game.make_move('e6', 'e7'))
+    print(game.make_move('c8', 'a9'))
 
 
+    #print(game.make_move('e6', 'e7'))
+    # print(game.make_move('', ''))
+
+    # print(game.make_move('', ''))
     # game.make_move('d3', 'd10')
     # game.make_move('e7', 'e6')
     # game.make_move('e9', 'f9')
