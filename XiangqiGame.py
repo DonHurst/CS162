@@ -6,10 +6,12 @@
 
 
 class Board:
-    """The Board class """
+    """The Board class contains an initializer that creates the board and places the pieces. It also has functions to
+     return the piece at a specific location, a function to return the board, and a function to print the board for
+     testing"""
 
     def __init__(self):
-        """"""
+        """Initializer function creates the board and sets the pieces"""
 
         # Variables for number of rows / columns
         self.__rows = 10
@@ -70,15 +72,15 @@ class Board:
         self.__gameBoard[9][4] = General('black')
 
     def get_piece(self, x, y):
-        """"""
+        """Get piece takes the row and column as parameters and returns the piece at that location on the board"""
         return self.__gameBoard[x][y]
 
     def get_board(self):
-        """"""
+        """Get board returns the gameboard"""
         return self.__gameBoard
 
     def print_board(self):
-        """The print board function"""
+        """The print board function prints the board in a way that makes sense visually. Used for testing"""
 
         row_counter = 1
         for row in reversed(self.__gameBoard):
@@ -88,7 +90,11 @@ class Board:
 
 
 class XiangqiGame:
-    """ """
+    """The XiangqiGame class contains the functionality for the game. To keep it brief, it contains an initializer to
+    instantiate the board, a list for the corresponding letter positions, a value to store the current turn, and a val
+    to store the current game state. It has a get game state function, is in check function, is in checkmate function,
+    test move function, try all moves function, make move function, and functions to check the move for each of the
+     pieces"""
 
     def __init__(self):
         """Init function for the game initializes the game board and a list to hold the corresponding letter values
@@ -99,11 +105,14 @@ class XiangqiGame:
         self.__game_state = 'UNFINISHED'
 
     def get_game_state(self):
-        """"""
+        """returns the current game state"""
         return self.__game_state
 
     def is_in_check(self, color):
-        """"""
+        """the is in check function takes a color as the parameter. It searches the board and stores the red/black gens
+        positions as tuples of row and column. It compares their columns and if they are the same, checks for the flying
+        general rule. Else it runs through the board and sees if any of the opposing pieces has a valid move to take the
+        general. IF so, it returns true."""
 
         # get red general position
         # nested for loop steps through the possible locations in the castle to find the general
@@ -192,7 +201,6 @@ class XiangqiGame:
                         if valid_move is True:
                             return True
 
-
             # if all pieces are checked and none have general in check, return false
             return False
 
@@ -201,6 +209,9 @@ class XiangqiGame:
             return False
 
     def is_in_checkmate(self, color):
+        """The is in checkmate function takes a color as the parameter. It works by calling the try all moves function
+        with the color indicated. If that function returns true(there is a valid move available) it returns false.
+        Else, it returns true"""
 
         if color == 'red':
 
@@ -223,6 +234,10 @@ class XiangqiGame:
                 return True
 
     def test_move(self, from_row, from_col, to_row, to_col):
+        """The test move function takes the row and column values for the starting and ending position as parameters.
+        It works by getting the item in the space at each position. It makes the move and then checks to see if the gen
+        is in check. It returns the pieces to their position, then returns False if the general is in check. Else it
+        returns False"""
 
         board = self.__gameBoard.get_board()
 
@@ -257,12 +272,19 @@ class XiangqiGame:
             else:
                 return True
         else:
-            # move piece back
-            board[from_row][from_col] = moving_piece
-            board[to_row][to_col] = '0'
             return False
 
+        else:
+            # move piece back
+            board[from_row][from_col] = moving_piece
+            board[to_row][to_col] = target_piece
+            return False
+
+
     def try_all_moves(self, color):
+        """The try all moves function takes the color as a parameter. it creates a list to hold all the moves. It then
+        steps through the board and checks to see if the color can make any valid moves that don't result in check. If
+        the list is empty (no valid moves) it returns false. Else, it returns true."""
 
         move_list = []
 
@@ -323,8 +345,11 @@ class XiangqiGame:
                 return True
 
     def make_move(self, pos_from, pos_to):
-        """
-        """
+        """The make move takes the position from and to strings as parameters. It converts the strings to meaningful
+        positions in the list. It checks if the move is valid and if so, it makes the move. Then it checks to see if
+        the move put the moving pieces general in check. If so, it resets the position and returns false. Next it checks
+        to see if the opposing side has valid moves. If not, it declares red the winner. If either side still has valid
+        moves, it changes the current turn and returns"""
 
         # if the game is done, return false
         if self.__game_state != "UNFINISHED":
@@ -393,7 +418,6 @@ class XiangqiGame:
                 if red_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
-                    self.__gameBoard.print_board()
                     return False
 
                 if black_general_check is True:
@@ -433,7 +457,8 @@ class XiangqiGame:
             return False
 
     def check_move(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos):
-        """"""
+        """Check move takes the row and column of the starting and ending positions. It uses get piece to check the
+        type of piece before using that to call the subsequent check move for that piece."""
 
         moving_piece = self.__gameBoard.get_piece(from_row_pos, from_col_pos)
 
@@ -459,7 +484,7 @@ class XiangqiGame:
             return self.check_move_soldier(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
 
     def check_move_general(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """"""
+        """check move general takes the starting and ending position and the piece moving as parameters. """
 
         # instantiate variable to hold the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -598,7 +623,7 @@ class XiangqiGame:
                     return False
 
     def check_move_advisor(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """"""
+        """check move general takes the starting and ending position and the piece moving as parameters. """
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -742,7 +767,7 @@ class XiangqiGame:
                     return False
 
     def check_move_elephant(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """"""
+        """check move general takes the starting and ending position and the piece moving as parameters. """
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -909,7 +934,7 @@ class XiangqiGame:
                 return False
 
     def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """"""
+        """check move general takes the starting and ending position and the piece moving as parameters. """
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -1216,7 +1241,7 @@ class XiangqiGame:
                 return False
 
     def check_move_chariot(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """"""
+        """check move general takes the starting and ending position and the piece moving as parameters. """
 
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
 
@@ -1421,7 +1446,7 @@ class XiangqiGame:
                 return False
 
     def check_move_cannon(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """"""
+        """check move general takes the starting and ending position and the piece moving as parameters. """
 
         # instantiate variable for the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -1657,7 +1682,7 @@ class XiangqiGame:
             return False
 
     def check_move_soldier(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """"""
+        """check move general takes the starting and ending position and the piece moving as parameters. """
 
         # instantiate variable for the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -1854,35 +1879,10 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    print(game.make_move('b1', 'c3'))
-    print(game.make_move('h10', 'g8'))
-    print(game.make_move('c3', 'e2'))
-    print(game.make_move('g8', 'e9'))
-    print(game.make_move('e2', 'g3'))
-    print(game.make_move('e9', 'c8'))
-    print(game.make_move('e4', 'e5'))
-    print(game.make_move('c8', 'a9'))
 
-
-    #print(game.make_move('e6', 'e7'))
-    # print(game.make_move('', ''))
-
-    # print(game.make_move('', ''))
-    # game.make_move('d3', 'd10')
-    # game.make_move('e7', 'e6')
-    # game.make_move('e9', 'f9')
-    # game.make_move('d2', 'd10')
-    # game.make_move('f9', 'f1')
-
-    """
-    game.make_move('c4', 'c5')
-    game.make_move('e6', 'e5')
-    game.make_move('c5', 'c6')
-    game.make_move('e5', 'f5')
-    game.make_move('c6', 'd6')
-    """
-    """
+    game = XiangqiGame()
+    move_result = game.make_move('c1', 'e3')
     black_in_check = game.is_in_check('black')
     game.make_move('e7', 'e6')
     state = game.get_game_state()
-    """
+
