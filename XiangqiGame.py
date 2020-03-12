@@ -271,8 +271,6 @@ class XiangqiGame:
                 return False
             else:
                 return True
-        else:
-            return False
 
         else:
             # move piece back
@@ -418,6 +416,7 @@ class XiangqiGame:
                 if red_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
+                    self.__gameBoard.print_board()
                     return False
 
                 if black_general_check is True:
@@ -434,6 +433,7 @@ class XiangqiGame:
                 if black_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
+                    self.__gameBoard.print_board()
                     return False
 
                 if red_general_check is True:
@@ -451,6 +451,7 @@ class XiangqiGame:
             elif self.__current_turn == 'black':
                 self.__current_turn = 'red'
 
+            self.__gameBoard.print_board()
             return True
 
         else:
@@ -498,14 +499,6 @@ class XiangqiGame:
 
             # if the column position is outside the castle, return false
             elif to_col_pos < 3 or to_col_pos > 5:
-                return False
-
-            # if attempted move is top corner of castle
-            if to_row_pos == 2 and (to_col_pos == 3 or to_col_pos == 5):
-                return False
-
-            # if attempted move is bottom corner of castle
-            if to_row_pos == 0 and (to_col_pos == 3 or to_col_pos == 5):
                 return False
 
             # if the move would not put the piece outside the castle
@@ -564,14 +557,6 @@ class XiangqiGame:
 
             # if the column position is outside the castle, return false
             elif to_col_pos < 3 or to_col_pos > 5:
-                return False
-
-            # if attempted move is top corner of castle
-            if to_row_pos == 9 and (to_col_pos == 3 or to_col_pos == 5):
-                return False
-
-            # if attempted move is bottom corner of castle
-            if to_row_pos == 7 and (to_col_pos == 3 or to_col_pos == 5):
                 return False
 
             else:
@@ -1879,10 +1864,42 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
+    print(game.make_move('c1', 'e3')) # d1
+    print(game.make_move('e7', 'e6')) # d2
+    print(game.make_move('b1', 'd2')) # d3
+    print(game.make_move('h10', 'g8')) # d4
+    print(game.make_move('h1', 'i3')) # d5
+    print(game.make_move('g10', 'e8')) # d6
+    print(game.make_move('h3', 'g3')) # d7
+    print(game.make_move('i7', 'i6')) # d8
+    print(game.make_move('i1', 'h1')) # d9
+    print(game.make_move('g7', 'g6')) # d10
+    print(game.make_move('d2', 'f3')) # d11
+    print(game.make_move('h8', 'i8')) # d12
+    print(game.make_move('d1', 'e2')) # d13
+    print(game.make_move('b8', 'd8')) # d14
+    print(game.make_move('a1', 'd1')) # d15
+    print(game.make_move('b10', 'c8')) # d16
+    print(game.make_move('g4', 'g5')) # d17
+    print(game.make_move('d10', 'e9')) # d18
+    print(game.make_move('g5', 'g6')) # d19
+    print(game.make_move('g8', 'f6')) # d20
+    print(game.make_move('g3', 'g2')) # d21
+    print(game.make_move('f6', 'e4')) # d22
+    print(game.make_move('d1', 'd4')) # d23
+    print(game.make_move('a10', 'b10')) # d24
+    print(game.make_move('d4', 'e4')) # d25
+    print(game.make_move('i8', 'i4')) # d 26 here
+    print(game.make_move('e1', 'd1')) # d27
+    print(game.make_move('b10', 'b3')) # d28
+    print(game.make_move('f3', 'e5')) # d29
+    print(game.make_move('i10', 'i7')) # d30
+    print(game.make_move('h1', 'h10')) # d31
+    print(game.make_move('e6', 'e5')) # d32
+    print(game.make_move('h10', 'f10')) # d33
+    print(game.make_move('e10', 'f10')) # d34
+    print(game.make_move('d1', 'e1')) # d35
 
-    game = XiangqiGame()
-    move_result = game.make_move('c1', 'e3')
-    black_in_check = game.is_in_check('black')
-    game.make_move('e7', 'e6')
-    state = game.get_game_state()
+
+    print(game.get_game_state())
 
