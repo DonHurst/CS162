@@ -416,7 +416,6 @@ class XiangqiGame:
                 if red_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
-                    self.__gameBoard.print_board()
                     return False
 
                 if black_general_check is True:
@@ -433,7 +432,6 @@ class XiangqiGame:
                 if black_general_check is True:
                     board[from_row_pos][from_col_pos] = moving_piece
                     board[to_row_pos][to_col_pos] = '0'
-                    self.__gameBoard.print_board()
                     return False
 
                 if red_general_check is True:
@@ -451,7 +449,6 @@ class XiangqiGame:
             elif self.__current_turn == 'black':
                 self.__current_turn = 'red'
 
-            self.__gameBoard.print_board()
             return True
 
         else:
@@ -485,7 +482,11 @@ class XiangqiGame:
             return self.check_move_soldier(from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece)
 
     def check_move_general(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """check move general takes the starting and ending position and the piece moving as parameters. """
+        """check move general takes the starting and ending position and the piece moving as parameters. It creates a
+         variable to hold the targeted space. Then, based on the generals color, it ensures the move doesnt push the gen
+         out of the castle. Next, it compares to see if the row or column is staying consistent. After that, it checks
+         to see how the other parameter moved to determine which direction to move. Lastly, it checks to see if the
+         desired position is empty or an opposing color. If so it returns true. Else, it returns False"""
 
         # instantiate variable to hold the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -608,7 +609,10 @@ class XiangqiGame:
                     return False
 
     def check_move_advisor(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """check move general takes the starting and ending position and the piece moving as parameters. """
+        """check move advisor takes the starting and ending position and the piece moving as parameters. It runs the
+         same check as general to ensure pieces stay in the castle. Next it checks to see how the row and column changed
+          in the to position to determine which way to go. If it is not diagonal, it returns false. If the target pos is
+          empty or the opposite color, it returns True"""
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -752,7 +756,11 @@ class XiangqiGame:
                     return False
 
     def check_move_elephant(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """check move general takes the starting and ending position and the piece moving as parameters. """
+        """check move elephant takes the starting and ending position and the piece moving as parameters. it works like
+         the general check but instead of checking to remain in the castle, it checks to ensure the elephant doesn't
+         cross the river. Since it moves 2 diagonal spaces at a time, it also checks to see if the interim step is
+         occupied. If so, the move isn't valid. Else if the move is valid (empty or opposite color position) it ret.
+         True"""
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -919,7 +927,10 @@ class XiangqiGame:
                 return False
 
     def check_move_horse(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """check move general takes the starting and ending position and the piece moving as parameters. """
+        """check move horse takes the starting and ending position and the piece moving as parameters. It uses the end
+        pos to determine which way the horse is moving Like the elephant, it checks that first interim step for a piece
+        and returns false if it isn't empty. Else it checks the target location to see if it's empty or an opposite col.
+        if so, it returns True"""
 
         # instantiate variable to hold the targeted space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -1015,7 +1026,6 @@ class XiangqiGame:
 
                 else:
                     return False
-
 
             # check piece move col - 2 | row + 1
             elif to_col_pos == from_col_pos - 2 and to_row_pos == from_row_pos + 1:
@@ -1226,7 +1236,10 @@ class XiangqiGame:
                 return False
 
     def check_move_chariot(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """check move general takes the starting and ending position and the piece moving as parameters. """
+        """check move chariot takes the starting and ending position and the piece moving as parameters. It works by
+         first determining if the row or column is changing. Next, it uses a for loop to step through the range
+         between the lesser position and greater position. If there is anything obstructing from the start to end loc.
+          it returns false. Then it checks the target location and if the space is valid, it returns true."""
 
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
 
@@ -1431,7 +1444,11 @@ class XiangqiGame:
                 return False
 
     def check_move_cannon(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """check move general takes the starting and ending position and the piece moving as parameters. """
+        """check move cannon takes the starting and ending position and the piece moving as parameters. It works like
+         the chariot but has the added step of checking captures with a single interim piece. To do this, it creates a
+         list and appends it for each value between the start and end location. If the end point is blank and the list
+         is empty, the move is true. Else if the list has exactly one item in it and the target space is an opposing pc
+         it's a valid capture. Else it returns False"""
 
         # instantiate variable for the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -1667,7 +1684,11 @@ class XiangqiGame:
             return False
 
     def check_move_soldier(self, from_row_pos, from_col_pos, to_row_pos, to_col_pos, moving_piece):
-        """check move general takes the starting and ending position and the piece moving as parameters. """
+        """check move Soldier takes the starting and ending position and the piece moving as parameters. It first checks
+         to see if the soldier has crossed the river(by checking the starting row). If so, it offers the ability to move
+         left, right, or forward. If not, it only allows the soldier to move forward. It does this similarly to other
+         pieces by checking to see what has changed between the row/column values. If the move is a valid direction
+         and the space is empty or occupied by enemy piece, it returns True"""
 
         # instantiate variable for the target space
         target_space = self.__gameBoard.get_piece(to_row_pos, to_col_pos)
@@ -1770,7 +1791,7 @@ class XiangqiGame:
                     else:
                         return False
 
-                        # if the soldier moves forward one space
+                # if the soldier moves forward one space
                 elif to_row_pos == from_row_pos - 1 and to_col_pos == from_col_pos:
 
                     # if the space is empty
@@ -1864,42 +1885,12 @@ class Soldier(Piece):
 
 if __name__ == '__main__':
     game = XiangqiGame()
-    print(game.make_move('c1', 'e3')) # d1
-    print(game.make_move('e7', 'e6')) # d2
-    print(game.make_move('b1', 'd2')) # d3
-    print(game.make_move('h10', 'g8')) # d4
-    print(game.make_move('h1', 'i3')) # d5
-    print(game.make_move('g10', 'e8')) # d6
-    print(game.make_move('h3', 'g3')) # d7
-    print(game.make_move('i7', 'i6')) # d8
-    print(game.make_move('i1', 'h1')) # d9
-    print(game.make_move('g7', 'g6')) # d10
-    print(game.make_move('d2', 'f3')) # d11
-    print(game.make_move('h8', 'i8')) # d12
-    print(game.make_move('d1', 'e2')) # d13
-    print(game.make_move('b8', 'd8')) # d14
-    print(game.make_move('a1', 'd1')) # d15
-    print(game.make_move('b10', 'c8')) # d16
-    print(game.make_move('g4', 'g5')) # d17
-    print(game.make_move('d10', 'e9')) # d18
-    print(game.make_move('g5', 'g6')) # d19
-    print(game.make_move('g8', 'f6')) # d20
-    print(game.make_move('g3', 'g2')) # d21
-    print(game.make_move('f6', 'e4')) # d22
-    print(game.make_move('d1', 'd4')) # d23
-    print(game.make_move('a10', 'b10')) # d24
-    print(game.make_move('d4', 'e4')) # d25
-    print(game.make_move('i8', 'i4')) # d 26 here
-    print(game.make_move('e1', 'd1')) # d27
-    print(game.make_move('b10', 'b3')) # d28
-    print(game.make_move('f3', 'e5')) # d29
-    print(game.make_move('i10', 'i7')) # d30
-    print(game.make_move('h1', 'h10')) # d31
-    print(game.make_move('e6', 'e5')) # d32
-    print(game.make_move('h10', 'f10')) # d33
-    print(game.make_move('e10', 'f10')) # d34
-    print(game.make_move('d1', 'e1')) # d35
-
-
+    print(game.make_move('b3', 'e3'))
+    print(game.make_move('h8', 'e8'))
+    print(game.make_move('h3', 'h6'))
+    print(game.make_move('b8', 'b4'))
+    print(game.make_move('e3', 'e7'))
+    print(game.make_move('e8', 'e4'))
+    print(game.make_move('h6', 'e6'))
     print(game.get_game_state())
 
